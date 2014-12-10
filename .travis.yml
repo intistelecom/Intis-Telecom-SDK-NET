@@ -1,0 +1,3 @@
+language: csharp
+solution: Intis.sln
+script: make build
