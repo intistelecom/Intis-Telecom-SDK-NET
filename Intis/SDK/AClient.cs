@@ -4,6 +4,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Collections.Specialized;
 using Newtonsoft.Json.Linq;
+using System.Web;
 
 namespace Intis.SDK
 {
@@ -67,7 +68,7 @@ namespace Intis.SDK
 
         private string GetMd5Hash(string str){
             MD5 md5Hasher = MD5.Create();
-            byte[] data = md5Hasher.ComputeHash(Encoding.Default.GetBytes(str));
+            byte[] data = md5Hasher.ComputeHash(Encoding.UTF8.GetBytes(str));
             StringBuilder sBuilder = new StringBuilder();
 
             for (int i = 0; i < data.Length; i++)
@@ -88,8 +89,17 @@ namespace Intis.SDK
 
 		private JToken getContentFromApi(string url, NameValueCollection allParameters)
         {
+            NameValueCollection encodeParameters = new NameValueCollection();
+
+            for (int i = 0; i <= allParameters.Count - 1; i++)
+            {
+                encodeParameters.Add(allParameters.GetKey(i), HttpUtility.UrlEncode(allParameters.Get(i)));
+            }
+
             WebClient client = new WebClient();
-            client.QueryString = allParameters;
+            client.QueryString = encodeParameters;
+            client.Encoding = Encoding.UTF8;
+
             string result = client.DownloadString(url);
 
             if (result.Length == 0)
