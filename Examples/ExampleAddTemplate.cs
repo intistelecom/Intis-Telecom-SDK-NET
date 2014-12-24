@@ -16,8 +16,8 @@ namespace Examples
 			string apiHost = "http://dev.sms16.ru/get/";
 			IntisClient client = new IntisClient(login, apiKey, apiHost);
 
-			Int64 template = client.addTemplate("test55", "this is test");
-			var t = "ddd";
+            //Int64 template = client.addTemplate("test55", "this is test");
+            //var t = "ddd";
 		}
 	}
 }

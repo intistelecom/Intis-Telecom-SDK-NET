@@ -5,10 +5,12 @@ using Intis.SDK.Entity;
 using System.Collections.Specialized;
 using Newtonsoft.Json.Linq;
 using System.Numerics;
+using System.Runtime.Serialization.Json;
+using System.IO;
 
 namespace Intis.SDK
 {
-    public class IntisClient : AClient, IClient
+    public class IntisClient : AClient//, IClient
     {
         public IntisClient(string login, string apiKey, string apiHost)
         {
@@ -20,228 +22,238 @@ namespace Intis.SDK
         public Balance getBalance()
         {
             NameValueCollection parameters = new NameValueCollection();
-			JToken content = this.getContent("balance", parameters);
-            Balance balance = new Balance(content);
+            MemoryStream content = this.getContent("balance", parameters);
+
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Balance));
+            Balance balance = serializer.ReadObject(content) as Balance;
 
             return balance;
         }
 
-        public List<PhoneBase> getPhoneBases() {
-            NameValueCollection parameters = new NameValueCollection();
-			JToken content = this.getContent("base", parameters);
-
-            List<PhoneBase> phoneBases = new List<PhoneBase>();
-
-			foreach (var one in content)
-			{
-				phoneBases.Add(new PhoneBase(one));
-			}
-
-            return phoneBases;
-        }
-
-        public List<Originator> getOriginators()
+        public List<PhoneBase> getPhoneBases()
         {
             NameValueCollection parameters = new NameValueCollection();
-			JToken content = this.getContent("senders", parameters);
+            MemoryStream content = this.getContent("base", parameters);
 
-            List<Originator> originators = new List<Originator>();
-			foreach (var one in content)
-			{
-				originators.Add(new Originator(one));
-			}
+            List<PhoneBase> bases = new List<PhoneBase>();
 
-            return originators;
+            DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
+            settings.UseSimpleDictionaryFormat = true;
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, PhoneBase>), settings);
+            Dictionary<Int64, PhoneBase> phoneBases = serializer.ReadObject(content) as Dictionary<Int64, PhoneBase>;
+
+            foreach (var one in phoneBases)
+            {
+                PhoneBase oneBase = one.Value;
+                oneBase.baseId = one.Key;
+                bases.Add(oneBase);
+            }
+
+            return bases;
         }
 
-        public List<PhoneBaseItem> getPhoneBaseItems(int baseId, int page = 1)
-        {
-            NameValueCollection parameters = new NameValueCollection();
-			string baseIdStr = baseId.ToString();
-			string pageStr = page.ToString();
+        //public List<Originator> getOriginators()
+        //{
+        //    NameValueCollection parameters = new NameValueCollection();
+        //    JToken content = this.getContent("senders", parameters);
 
-			parameters.Add("base", baseIdStr);
-			parameters.Add("page", pageStr);
+        //    List<Originator> originators = new List<Originator>();
+        //    foreach (var one in content)
+        //    {
+        //        originators.Add(new Originator(one));
+        //    }
 
-			JToken content = this.getContent("phone", parameters);
+        //    return originators;
+        //}
 
-            List<PhoneBaseItem> phoneBaseItem = new List<PhoneBaseItem>();
+        //public List<PhoneBaseItem> getPhoneBaseItems(int baseId, int page = 1)
+        //{
+        //    NameValueCollection parameters = new NameValueCollection();
+        //    string baseIdStr = baseId.ToString();
+        //    string pageStr = page.ToString();
 
-			foreach (var one in content)
-			{
-				phoneBaseItem.Add(new PhoneBaseItem(one));
-			}
+        //    parameters.Add("base", baseIdStr);
+        //    parameters.Add("page", pageStr);
 
-            return phoneBaseItem;
-        }
+        //    JToken content = this.getContent("phone", parameters);
 
-		public List<DeliveryStatus> getDeliveryStatus(BigInteger[] messageId)
-        {
-            NameValueCollection parameters = new NameValueCollection();
-			string messageIdStr = String.Join(",", messageId.Select(p=>p.ToString()));
-			parameters.Add("state", messageIdStr);
+        //    List<PhoneBaseItem> phoneBaseItem = new List<PhoneBaseItem>();
 
-			JToken content = this.getContent("status", parameters);
+        //    foreach (var one in content)
+        //    {
+        //        phoneBaseItem.Add(new PhoneBaseItem(one));
+        //    }
 
-            List<DeliveryStatus> deliveryStatus = new List<DeliveryStatus>();
-			foreach (var one in content)
-			{
-				deliveryStatus.Add(new DeliveryStatus(one));
-			}
+        //    return phoneBaseItem;
+        //}
 
-            return deliveryStatus;
-        }
+        //public List<DeliveryStatus> getDeliveryStatus(BigInteger[] messageId)
+        //{
+        //    NameValueCollection parameters = new NameValueCollection();
+        //    string messageIdStr = String.Join(",", messageId.Select(p=>p.ToString()));
+        //    parameters.Add("state", messageIdStr);
 
-        public List<MessageSendingResult> sendMessage(Int64[] phone, string originator, string text)
-        {
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("phone", String.Join(",", phone.Select(p=>p.ToString())));
-            parameters.Add("sender", originator);
-            parameters.Add("text", text);
+        //    JToken content = this.getContent("status", parameters);
 
-			JToken content = this.getContent("send", parameters);
+        //    List<DeliveryStatus> deliveryStatus = new List<DeliveryStatus>();
+        //    foreach (var one in content)
+        //    {
+        //        deliveryStatus.Add(new DeliveryStatus(one));
+        //    }
 
-            List<MessageSendingResult> messages = new List<MessageSendingResult>();
+        //    return deliveryStatus;
+        //}
 
-			foreach (var one in content)
-			{
-				messages.Add(new MessageSendingResult(one));
-			}
+        //public List<MessageSendingResult> sendMessage(Int64[] phone, string originator, string text)
+        //{
+        //    NameValueCollection parameters = new NameValueCollection();
+        //    parameters.Add("phone", String.Join(",", phone.Select(p=>p.ToString())));
+        //    parameters.Add("sender", originator);
+        //    parameters.Add("text", text);
 
-            return messages;
-        }
+        //    JToken content = this.getContent("send", parameters);
 
-        public StopList checkStopList(Int64 phone)
-        {
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("phone", phone.ToString());
+        //    List<MessageSendingResult> messages = new List<MessageSendingResult>();
 
-			JToken content = this.getContent("find_on_stop", parameters);
+        //    foreach (var one in content)
+        //    {
+        //        messages.Add(new MessageSendingResult(one));
+        //    }
 
-			StopList messages = new StopList(content);
+        //    return messages;
+        //}
 
-            return messages;
-        }
+        //public StopList checkStopList(Int64 phone)
+        //{
+        //    NameValueCollection parameters = new NameValueCollection();
+        //    parameters.Add("phone", phone.ToString());
 
-		public Int64 addToStopList(Int64 phone)
-        {
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("phone", phone.ToString());
+        //    JToken content = this.getContent("find_on_stop", parameters);
 
-			JToken content = this.getContent("add2stop", parameters);
+        //    StopList messages = new StopList(content);
 
-			JObject id = content as JObject;
-			var idt = (string)id.GetValue("id");
+        //    return messages;
+        //}
 
-			return Int64.Parse(idt);
-        }
+        //public Int64 addToStopList(Int64 phone)
+        //{
+        //    NameValueCollection parameters = new NameValueCollection();
+        //    parameters.Add("phone", phone.ToString());
 
-        public List<Template> getTemplates()
-        {
-            NameValueCollection parameters = new NameValueCollection();
+        //    JToken content = this.getContent("add2stop", parameters);
 
-			JToken content = this.getContent("template", parameters);
+        //    JObject id = content as JObject;
+        //    var idt = (string)id.GetValue("id");
 
-            List<Template> template = new List<Template>();
-			foreach (var one in content)
-			{
-				template.Add(new Template(one));
-			}
+        //    return Int64.Parse(idt);
+        //}
 
-            return template;
-        }
+        //public List<Template> getTemplates()
+        //{
+        //    NameValueCollection parameters = new NameValueCollection();
 
-        public Int64 addTemplate(string title, string template)
-        {
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("name", title);
-            parameters.Add("text", template);
+        //    JToken content = this.getContent("template", parameters);
 
-			JToken content = this.getContent("add_template", parameters);
+        //    List<Template> template = new List<Template>();
+        //    foreach (var one in content)
+        //    {
+        //        template.Add(new Template(one));
+        //    }
 
-			JObject id = content as JObject;
-			var idt = (string)id.GetValue("id");
+        //    return template;
+        //}
 
-			return Int64.Parse(idt);
-        }
+        //public Int64 addTemplate(string title, string template)
+        //{
+        //    NameValueCollection parameters = new NameValueCollection();
+        //    parameters.Add("name", title);
+        //    parameters.Add("text", template);
 
-        public List<DailyStats> getDailyStatsByMonth(int year, int month)
-        {
-            DateTime date = new DateTime(year, month, 1, 0, 0, 0);
+        //    JToken content = this.getContent("add_template", parameters);
 
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("month", date.ToString("yyyy-MM"));
+        //    JObject id = content as JObject;
+        //    var idt = (string)id.GetValue("id");
 
-			JToken content = this.getContent("stat_by_month", parameters);
+        //    return Int64.Parse(idt);
+        //}
 
-            List<DailyStats> dailyStats = new List<DailyStats>();
-			foreach (var one in content)
-			{
-				dailyStats.Add(new DailyStats(one));
-			}
+        //public List<DailyStats> getDailyStatsByMonth(int year, int month)
+        //{
+        //    DateTime date = new DateTime(year, month, 1, 0, 0, 0);
 
-            return dailyStats;
-        }
+        //    NameValueCollection parameters = new NameValueCollection();
+        //    parameters.Add("month", date.ToString("yyyy-MM"));
 
-        public List<HLRResponse> makeHLRRequest(Int64[] phone)
-        {
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("phone", String.Join(",", phone.Select(p => p.ToString())));
+        //    JToken content = this.getContent("stat_by_month", parameters);
 
-			JToken content = this.getContent("hlr", parameters);
+        //    List<DailyStats> dailyStats = new List<DailyStats>();
+        //    foreach (var one in content)
+        //    {
+        //        dailyStats.Add(new DailyStats(one));
+        //    }
 
-            List<HLRResponse> HLRResponse = new List<HLRResponse>();
-			foreach (var one in content)
-			{
-				HLRResponse.Add(new HLRResponse(one));
-			}
+        //    return dailyStats;
+        //}
 
-            return HLRResponse;
-        }
+        //public List<HLRResponse> makeHLRRequest(Int64[] phone)
+        //{
+        //    NameValueCollection parameters = new NameValueCollection();
+        //    parameters.Add("phone", String.Join(",", phone.Select(p => p.ToString())));
 
-        public List<HLRStatItem> getHlrStats(string from, string to)
-        {
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("from", from);
-            parameters.Add("to", to);
+        //    JToken content = this.getContent("hlr", parameters);
 
-			JToken content = this.getContent("hlr_stat", parameters);
+        //    List<HLRResponse> HLRResponse = new List<HLRResponse>();
+        //    foreach (var one in content)
+        //    {
+        //        HLRResponse.Add(new HLRResponse(one));
+        //    }
 
-            List<HLRStatItem> HLRStatItem = new List<HLRStatItem>();
-			foreach (var one in content as JObject)
-			{
-				HLRStatItem.Add(new HLRStatItem(one.Value));
-			}
+        //    return HLRResponse;
+        //}
 
-            return HLRStatItem;
-        }
+        //public List<HLRStatItem> getHlrStats(string from, string to)
+        //{
+        //    NameValueCollection parameters = new NameValueCollection();
+        //    parameters.Add("from", from);
+        //    parameters.Add("to", to);
 
-        public Network getNetworkByPhone(Int64 phone)
-        {
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("phone", phone.ToString());
+        //    JToken content = this.getContent("hlr_stat", parameters);
 
-			JToken content = this.getContent("operator", parameters);
+        //    List<HLRStatItem> HLRStatItem = new List<HLRStatItem>();
+        //    foreach (var one in content as JObject)
+        //    {
+        //        HLRStatItem.Add(new HLRStatItem(one.Value));
+        //    }
 
-			Network network = new Network(content);
+        //    return HLRStatItem;
+        //}
 
-            return network;
-        }
+        //public Network getNetworkByPhone(Int64 phone)
+        //{
+        //    NameValueCollection parameters = new NameValueCollection();
+        //    parameters.Add("phone", phone.ToString());
 
-        public List<IncomingMessage> getIncomingMessages(string date)
-        {
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("date", date);
+        //    JToken content = this.getContent("operator", parameters);
 
-			JToken content = this.getContent("incoming", parameters);
+        //    Network network = new Network(content);
 
-            List<IncomingMessage> incomingMessage = new List<IncomingMessage>();
-			foreach (var one in content)
-			{
-				incomingMessage.Add(new IncomingMessage(one));
-			}
+        //    return network;
+        //}
 
-            return incomingMessage;
-        }
+        //public List<IncomingMessage> getIncomingMessages(string date)
+        //{
+        //    NameValueCollection parameters = new NameValueCollection();
+        //    parameters.Add("date", date);
+
+        //    JToken content = this.getContent("incoming", parameters);
+
+        //    List<IncomingMessage> incomingMessage = new List<IncomingMessage>();
+        //    foreach (var one in content)
+        //    {
+        //        incomingMessage.Add(new IncomingMessage(one));
+        //    }
+
+        //    return incomingMessage;
+        //}
     }
 }

@@ -4,6 +4,12 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Collections.Specialized;
 using Newtonsoft.Json.Linq;
+using log4net;
+using System.Web.Script.Serialization;
+using Intis.SDK.Entity;
+using System.Runtime.Serialization.Json;
+using System.IO;
+using System.Collections.Generic;
 
 namespace Intis.SDK
 {
@@ -12,13 +18,14 @@ namespace Intis.SDK
         protected string login;
         protected string apiKey;
         protected string apiHost;
+        public static readonly ILog _logger = LogManager.GetLogger(typeof(AClient));
 
-		public JToken getContent(string scriptName, NameValueCollection parameters)
+        public MemoryStream getContent(string scriptName, NameValueCollection parameters)
         {
             NameValueCollection allParameters = this.getParameters(parameters);
             string url = apiHost + scriptName + ".php";
-			JToken result = this.getContentFromApi(url, allParameters);
-            this.checkException(result);
+            MemoryStream result = this.getContentFromApi(url, allParameters);
+            //this.checkException(result);
 
             return result;
         }
@@ -26,6 +33,7 @@ namespace Intis.SDK
         private string getTimestamp() {
             WebClient client = new WebClient();
             string timestamp = client.DownloadString(apiHost + "timestamp.php");
+            _logger.Info("Get timestamp: [" + timestamp + "]");
             return timestamp;
         }
 
@@ -49,6 +57,7 @@ namespace Intis.SDK
 				}
             }
             string sig = this.GetSignature(parameters);
+            _logger.Info("Signature: [" + sig + "]");
             parameters.Add("signature", sig);
 
             return parameters;
@@ -61,6 +70,7 @@ namespace Intis.SDK
                 str = str + parameters[item];
             }
             str = str + apiKey;
+            _logger.Info("String for the calculation of the signature: [" + str + "]");
 
             return this.GetMd5Hash(str);
         }
@@ -80,25 +90,28 @@ namespace Intis.SDK
 
 		private void checkException(JToken result)
         {
-		    if(result.Count() == 0)
-			    throw new SDKException(0);
-			if (result.First.Path == "error")
-				throw new SDKException((int)result.First);
+            if (result.Count() == 0)
+            {
+                _logger.Error("Empty result: [" + result + "]. SDKException(0)");
+                throw new SDKException(0);
+            }
+            if (result.First.Path == "error")
+            {
+                _logger.Error("Error: [" + result + "]. SDKException(" + (int)result.First + ")");
+                throw new SDKException((int)result.First);
+            }
         }
 
-		private JToken getContentFromApi(string url, NameValueCollection allParameters)
+        private MemoryStream getContentFromApi(string url, NameValueCollection allParameters)
         {
             WebClient client = new WebClient();
             client.QueryString = allParameters;
             string result = client.DownloadString(url);
 
-            if (result.Length == 0)
-				return new JConstructor();
+            byte[] byteArray = Encoding.UTF8.GetBytes(result);
+            MemoryStream stream = new MemoryStream(byteArray);
 
-
-			JToken data = JConstructor.Parse(result);
-			
-            return data;
+            return stream;
         }
     }
 }

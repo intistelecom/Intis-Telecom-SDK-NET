@@ -14,21 +14,21 @@ namespace Examples
 
 			IntisClient client = new IntisClient(login, apiKey, apiHost);
 
-			List<PhoneBase> balance = client.getPhoneBases();
-			foreach (PhoneBase one in balance)
-			{
-				one.getBaseId();
-				one.getTitle();
-				one.getCount();
-				one.getPages();
-				BirthdayGreetingSettings birthday = one.getBirthdayGreetingSettings();
-				birthday.getEnebled();
-				birthday.getOriginator();
-				birthday.getDaysBefore();
-				birthday.getTimeToSend();
-				birthday.getUselocalTime();
-				birthday.getTemplate();
-			}
+            //List<PhoneBase> balance = client.getPhoneBases();
+            //foreach (PhoneBase one in balance)
+            //{
+            //    one.getBaseId();
+            //    one.getTitle();
+            //    one.getCount();
+            //    one.getPages();
+            //    BirthdayGreetingSettings birthday = one.getBirthdayGreetingSettings();
+            //    birthday.getEnebled();
+            //    birthday.getOriginator();
+            //    birthday.getDaysBefore();
+            //    birthday.getTimeToSend();
+            //    birthday.getUselocalTime();
+            //    birthday.getTemplate();
+            //}
 		}
 	}
 }

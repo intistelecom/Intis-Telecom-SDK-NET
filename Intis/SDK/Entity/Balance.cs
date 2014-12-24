@@ -1,23 +1,22 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Runtime.Serialization;
 
 namespace Intis.SDK.Entity
 {
+    [DataContract]
     public class Balance
     {
-        private float amount { get; set; }
-        private string currency { get; set; }
+        [DataMember(Name = "money")]
+        public string amount { get; set; }
 
-		public Balance(JToken obj)
-		{
-			this.amount = (float)obj["money"];
-			this.currency = (string)obj["currency"]; 
-        }
+        [DataMember(Name = "currency")]
+        public string currency { get; set; }
+
 
         /// <summary>
         /// Amount of money
         /// </summary>
         /// <returns>float</returns>
-        public float getAmount()
+        public string getAmount()
         {
             return amount;
         }

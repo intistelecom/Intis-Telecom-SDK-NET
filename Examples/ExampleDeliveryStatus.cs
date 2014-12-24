@@ -17,13 +17,13 @@ namespace Examples
 
 			BigInteger[] messageId = new BigInteger[2] { 2, 4 };
 
-			List<DeliveryStatus> status = client.getDeliveryStatus(messageId);
-			foreach (DeliveryStatus one in status)
-			{
-				one.getMessageId();
-				one.getMessageStatus();
-				one.getCreatedAt();
-			}
+            //List<DeliveryStatus> status = client.getDeliveryStatus(messageId);
+            //foreach (DeliveryStatus one in status)
+            //{
+            //    one.getMessageId();
+            //    one.getMessageStatus();
+            //    one.getCreatedAt();
+            //}
 		}
 	}
 }

@@ -17,37 +17,37 @@ namespace Examples
 			string apiHost = "http://dev.sms16.ru/get/";
 			IntisClient client = new IntisClient(login, apiKey, apiHost);
 
-			List<HLRStatItem> HLRStatItem = client.getHlrStats("2014-07-01", "2014-10-01");
-			foreach (HLRStatItem one in HLRStatItem)
-			{
-				one.getMessageId();
-				one.getPhone();
-				one.getRequestId();
-				one.getRequestTime();
-				one.getTotalPrice();
+            //List<HLRStatItem> HLRStatItem = client.getHlrStats("2014-07-01", "2014-10-01");
+            //foreach (HLRStatItem one in HLRStatItem)
+            //{
+            //    one.getMessageId();
+            //    one.getPhone();
+            //    one.getRequestId();
+            //    one.getRequestTime();
+            //    one.getTotalPrice();
 
-				one.getId();
-				one.getIMSI();
-				one.getDestination();
-				one.getMCC();
-				one.getMNC();
-				one.getOriginalCountryCode();
-				one.getOriginalCountryName();
-				one.getOriginalNetworkName();
-				one.getOriginalNetworkPrefix();
-				one.getPortedCountryName();
-				one.getPortedCountryPrefix();
-				one.getPortedNetworkName();
-				one.getPortedNetworkPrefix();
-				one.getPricePerMessage();
-				one.getRoamingCountryName();
-				one.getRoamingCountryPrefix();
-				one.getRoamingNetworkName();
-				one.getRoamingNetworkPrefix();
-				one.getStatus();
-				one.isPorted();
-				one.isInRoaming();
-			}
+            //    one.getId();
+            //    one.getIMSI();
+            //    one.getDestination();
+            //    one.getMCC();
+            //    one.getMNC();
+            //    one.getOriginalCountryCode();
+            //    one.getOriginalCountryName();
+            //    one.getOriginalNetworkName();
+            //    one.getOriginalNetworkPrefix();
+            //    one.getPortedCountryName();
+            //    one.getPortedCountryPrefix();
+            //    one.getPortedNetworkName();
+            //    one.getPortedNetworkPrefix();
+            //    one.getPricePerMessage();
+            //    one.getRoamingCountryName();
+            //    one.getRoamingCountryPrefix();
+            //    one.getRoamingNetworkName();
+            //    one.getRoamingNetworkPrefix();
+            //    one.getStatus();
+            //    one.isPorted();
+            //    one.isInRoaming();
+            //}
 		}
 	}
 }

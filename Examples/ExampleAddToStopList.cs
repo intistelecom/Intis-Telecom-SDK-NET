@@ -16,7 +16,7 @@ namespace Examples
 			string apiHost = "http://dev.sms16.ru/get/";
 			IntisClient client = new IntisClient(login, apiKey, apiHost);
 
-			Int64 list = client.addToStopList(79009009096);
+            //Int64 list = client.addToStopList(79009009096);
 		}
 	}
 }

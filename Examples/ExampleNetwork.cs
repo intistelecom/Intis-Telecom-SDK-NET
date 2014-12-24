@@ -17,7 +17,7 @@ namespace Examples
 			string apiHost = "http://dev.sms16.ru/get/";
 			IntisClient client = new IntisClient(login, apiKey, apiHost);
 
-			Network network = client.getNetworkByPhone(79000000000);
+			//Network network = client.getNetworkByPhone(79000000000);
 		}
 	}
 }

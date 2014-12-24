@@ -17,10 +17,10 @@ namespace Examples
 			string apiHost = "http://dev.sms16.ru/get/";
 			IntisClient client = new IntisClient(login, apiKey, apiHost);
 
-			StopList list = client.checkStopList(79009009090);
-			list.getId();
-			list.getTimeAddedAt();
-			list.getDescription();
+            //StopList list = client.checkStopList(79009009090);
+            //list.getId();
+            //list.getTimeAddedAt();
+            //list.getDescription();
 		}
 	}
 }

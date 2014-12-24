@@ -1,25 +1,37 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Intis.SDK.Entity
 {
+    
+    [DataContract]
     public class PhoneBase
     {
-		private Int64 baseId { get; set; }
-        private string title{get; set;}
-        private int count{get; set;}
-        private int pages{get; set;}
-        private BirthdayGreetingSettings birthdayGreetingSettings{get; set;}
+		public Int64 baseId { get; set; }
 
-		public PhoneBase(JToken obj)
-		{
-			this.baseId = Int64.Parse(obj.Path);
-			this.title = (string)obj.First["name"];
-			this.count = (int)obj.First["count"];
-			this.pages = (int)obj.First["pages"];
+        [DataMember(Name = "name")]
+        public string title{get; set;}
 
-			this.birthdayGreetingSettings = new BirthdayGreetingSettings(obj.First);
-        }
+        [DataMember(Name = "count")]
+        public int count{get; set;}
+
+        [DataMember(Name = "pages")]
+        public int pages{get; set;}
+
+       
+        public BirthdayGreetingSettings birthdayGreetingSettings{get; set;}
+
+        //public PhoneBase(JToken obj)
+        //{
+        //    this.baseId = Int64.Parse(obj.Path);
+        //    this.title = (string)obj.First["name"];
+        //    this.count = (int)obj.First["count"];
+        //    this.pages = (int)obj.First["pages"];
+
+        //    this.birthdayGreetingSettings = new BirthdayGreetingSettings(obj.First);
+        //}
 
         /// <summary>
         /// List ID
