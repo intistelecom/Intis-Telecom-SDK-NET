@@ -14,12 +14,12 @@ namespace Examples
 
 			IntisClient client = new IntisClient(login, apiKey, apiHost);
 
-            //List<Originator> originators = client.getOriginators();
-            //foreach (Originator one in originators)
-            //{
-            //    one.getOriginator();
-            //    one.getState();
-            //}
+            List<Originator> originators = client.getOriginators();
+            foreach (Originator one in originators)
+            {
+                one.getOriginator();
+                one.getState();
+            }
 		}
 	}
 }

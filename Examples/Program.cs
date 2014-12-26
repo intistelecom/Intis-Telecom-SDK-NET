@@ -15,21 +15,7 @@ namespace Examples
             string apiHost = "http://dev.sms16.ru/get/";
             IntisClient client = new IntisClient(login, apiKey, apiHost);
 
-            List<PhoneBase> balance = client.getPhoneBases();
-            foreach (PhoneBase one in balance)
-            {
-                one.getBaseId();
-                one.getTitle();
-                one.getCount();
-                one.getPages();
-                BirthdayGreetingSettings birthday = one.getBirthdayGreetingSettings();
-                birthday.getEnebled();
-                birthday.getOriginator();
-                birthday.getDaysBefore();
-                birthday.getTimeToSend();
-                birthday.getUselocalTime();
-                birthday.getTemplate();
-            }
+			Int64 template = client.addTemplate("test56", "this is test 56");
         }
     }
 }

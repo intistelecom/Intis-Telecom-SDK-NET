@@ -1,34 +1,40 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Runtime.Serialization;
 
 namespace Intis.SDK.Entity
 {
+    [DataContract]
     public class PhoneBaseItem
     {
-		private Int64 phone { get; set; }
-        private string firstName { get; set; }
-        private string middleName { get; set; }
-        private string lastName { get; set; }
-        private string birthDay { get; set; }
-        private string gender { get; set; }
-        private string area { get; set; }
-        private string network { get; set; }
-        private string note1 { get; set; }
-        private string note2 { get; set; }
+		public Int64 phone { get; set; }
 
-		public PhoneBaseItem(JToken obj)
-        {
-			this.phone = Int64.Parse(obj.Path);
-			this.firstName = (string)obj.First["name"];
-			this.middleName = (string)obj.First["middle_name"];
-			this.lastName = (string)obj.First["last_name"];
-			this.birthDay = (string)obj.First["date_birth"];
-			this.gender = (string)obj.First["male"];
-			this.area = (string)obj.First["region"];
-			this.network =(string)obj.First["operator"];
-			this.note1 = (string)obj.First["note1"];
-			this.note2 = (string)obj.First["note2"];
-        }
+        [DataMember(Name = "name")]
+        private string firstName { get; set; }
+
+        [DataMember(Name = "middle_name")]
+        private string middleName { get; set; }
+
+        [DataMember(Name = "last_name")]
+        private string lastName { get; set; }
+
+        [DataMember(Name = "date_birth")]
+        private string birthDay { get; set; }
+
+        [DataMember(Name = "male")]
+        private string gender { get; set; }
+
+        [DataMember(Name = "region")]
+        private string area { get; set; }
+
+        [DataMember(Name = "operator")]
+        private string network { get; set; }
+
+        [DataMember(Name = "note1")]
+        private string note1 { get; set; }
+
+        [DataMember(Name = "note2")]
+        private string note2 { get; set; }
 
         /// <summary>
         /// Phone number of subscriber

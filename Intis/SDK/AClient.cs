@@ -10,6 +10,7 @@ using Intis.SDK.Entity;
 using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Collections.Generic;
+using System.Web;
 
 namespace Intis.SDK
 {
@@ -18,13 +19,23 @@ namespace Intis.SDK
         protected string login;
         protected string apiKey;
         protected string apiHost;
-        public static readonly ILog _logger = LogManager.GetLogger(typeof(AClient));
+        public static readonly ILog _logger = LogManager.GetLogger("IntisSDK");
 
-        public MemoryStream getContent(string scriptName, NameValueCollection parameters)
+        public MemoryStream getStreamContent(string scriptName, NameValueCollection parameters)
+        {
+            string result = getContent(scriptName, parameters);
+
+            byte[] byteArray = Encoding.UTF8.GetBytes(result);
+            MemoryStream stream = new MemoryStream(byteArray);
+
+            return stream;
+        }
+
+        public string getContent(string scriptName, NameValueCollection parameters)
         {
             NameValueCollection allParameters = this.getParameters(parameters);
             string url = apiHost + scriptName + ".php";
-            MemoryStream result = this.getContentFromApi(url, allParameters);
+            string result = this.getContentFromApi(url, allParameters);
             //this.checkException(result);
 
             return result;
@@ -102,7 +113,7 @@ namespace Intis.SDK
             }
         }
 
-        private MemoryStream getContentFromApi(string url, NameValueCollection allParameters)
+        private string getContentFromApi(string url, NameValueCollection allParameters)
         {
             NameValueCollection encodeParameters = new NameValueCollection();
 
@@ -117,10 +128,7 @@ namespace Intis.SDK
 
             string result = client.DownloadString(url);
 
-            byte[] byteArray = Encoding.UTF8.GetBytes(result);
-            MemoryStream stream = new MemoryStream(byteArray);
-
-            return stream;
+            return result;
         }
     }
 }

@@ -1,16 +1,19 @@
 ﻿using Newtonsoft.Json.Linq;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Intis.SDK.Entity
 {
+    [DataContract]
     public class Originator
     {
         private string originator {get; set;}
         private string state { get; set; }
 
-		public Originator(JToken obj)
+        public Originator(string originator, string state)
         {
-			this.originator = obj.Path;
-			this.state = obj.First.ToString();
+            this.originator = originator;
+            this.state = state;
         }
 
         /// <summary>

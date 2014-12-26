@@ -1,23 +1,20 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Runtime.Serialization;
 
 namespace Intis.SDK.Entity
 {
+    [DataContract]
     public class StopList
     {
-		private Int64 id { get; set; }
+		public Int64 id { get; set; }
+
+        [DataMember(Name = "time_in")]
         private string timeAddedAt { get; set; }
+
+        [DataMember(Name = "description")]
         private string description { get; set; }
 
-        public StopList(JToken obj)
-        {
-			foreach (var one in obj)
-			{
-				this.id = Int64.Parse(one.Path);
-				this.timeAddedAt = (string)one.First["time_in"];
-				this.description = (string)one.First["description"];
-			}
-        }
 
         /// <summary>
         /// Stop list ID

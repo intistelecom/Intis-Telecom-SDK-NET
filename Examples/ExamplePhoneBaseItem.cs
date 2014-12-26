@@ -18,20 +18,20 @@ namespace Examples
 
 			IntisClient client = new IntisClient(login, apiKey, apiHost);
 
-            //List<PhoneBaseItem> bases = client.getPhoneBaseItems(125480, 1);
-            //foreach (PhoneBaseItem one in bases)
-            //{
-            //    one.getPhone();
-            //    one.getFirstName();
-            //    one.getMiddleName();
-            //    one.getLastName();
-            //    one.getBirthDay();
-            //    one.getArea();
-            //    one.getGender();
-            //    one.getNetwork();
-            //    one.getNote1();
-            //    one.getNote2();
-            //}
+            List<PhoneBaseItem> bases = client.getPhoneBaseItems(125480, 1);
+            foreach (PhoneBaseItem one in bases)
+            {
+                one.getPhone();
+                one.getFirstName();
+                one.getMiddleName();
+                one.getLastName();
+                one.getBirthDay();
+                one.getArea();
+                one.getGender();
+                one.getNetwork();
+                one.getNote1();
+                one.getNote2();
+            }
 		}
 	}
 }

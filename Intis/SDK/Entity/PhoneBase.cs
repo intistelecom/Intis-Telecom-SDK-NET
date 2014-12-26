@@ -12,26 +12,41 @@ namespace Intis.SDK.Entity
 		public Int64 baseId { get; set; }
 
         [DataMember(Name = "name")]
-        public string title{get; set;}
+        private string title { get; set; }
 
         [DataMember(Name = "count")]
-        public int count{get; set;}
+        private int count { get; set; }
 
         [DataMember(Name = "pages")]
-        public int pages{get; set;}
+        private int pages { get; set; }
+
+
+
+
+        [DataMember(Name = "on_birth")]
+        private int enabled { get; set; }
+
+        [DataMember(Name = "day_before")]
+        private int daysBefore { get; set; }
+
+        [DataMember(Name = "birth_sender")]
+        private string originator { get; set; }
+
+        [DataMember(Name = "time_birth")]
+        private string timeToSend { get; set; }
+
+        [DataMember(Name = "local_time")]
+        private int useLocalTime { get; set; }
+
+        [DataMember(Name = "birth_text")]
+        private string template { get; set; }
 
        
-        public BirthdayGreetingSettings birthdayGreetingSettings{get; set;}
-
-        //public PhoneBase(JToken obj)
-        //{
-        //    this.baseId = Int64.Parse(obj.Path);
-        //    this.title = (string)obj.First["name"];
-        //    this.count = (int)obj.First["count"];
-        //    this.pages = (int)obj.First["pages"];
-
-        //    this.birthdayGreetingSettings = new BirthdayGreetingSettings(obj.First);
-        //}
+        public BirthdayGreetingSettings birthdayGreetingSettings{
+            get{
+                return new BirthdayGreetingSettings(enabled, daysBefore, originator, timeToSend, useLocalTime, template);
+            }
+        }
 
         /// <summary>
         /// List ID

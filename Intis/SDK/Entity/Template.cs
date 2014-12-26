@@ -1,23 +1,23 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Runtime.Serialization;
 
 namespace Intis.SDK.Entity
 {
+    [DataContract]
     public class Template
     {
-        private Int64 id { get; set; }
+        public Int64 id { get; set; }
+
+		[DataMember(Name = "name")]
         private string title { get; set; }
+
+		[DataMember(Name = "template")]
         private string template { get; set; }
+
+		[DataMember(Name = "up_time")]
         private string createdAt { get; set; }
 
-        public Template(JToken obj)
-        {
-		    JObject template = obj.First as JObject;
-			this.id = Int64.Parse(obj.Path);
-			this.title = (string)template.GetValue("name");
-			this.template = (string)template.GetValue("template");
-			this.createdAt = (string)template.GetValue("up_time");
-        }
 
         /// <summary>
         /// Template ID

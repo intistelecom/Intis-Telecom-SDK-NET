@@ -3,36 +3,24 @@ using System.Runtime.Serialization;
 
 namespace Intis.SDK.Entity
 {
-    [DataContract]
 	public class BirthdayGreetingSettings
 	{
-        [DataMember(Name = "on_birth")]
 		private int enabled { get; set; }
-
-        [DataMember(Name = "day_before")]
 		private int daysBefore { get; set; }
-
-        [DataMember(Name = "birth_sender")]
 		private string originator { get; set; }
-
-        [DataMember(Name = "time_birth")]
 		private string timeToSend { get; set; }
-
-        [DataMember(Name = "local_time")]
 		private int useLocalTime { get; set; }
-
-        [DataMember(Name = "birth_text")]
 		private string template { get; set; }
 
-        //public BirthdayGreetingSettings(JToken obj)
-        //{
-        //    this.enabled = (int)obj["on_birth"];
-        //    this.daysBefore = (int)obj["day_before"];
-        //    this.originator = (string)obj["birth_sender"];
-        //    this.timeToSend = (string)obj["time_birth"];
-        //    this.useLocalTime = (int)obj["local_time"];
-        //    this.template = (string)obj["birth_text"];
-        //}
+        public BirthdayGreetingSettings(int enabled, int daysBefore, string originator, string timeToSend, int useLocalTime, string template)
+        {
+            this.enabled = enabled;
+            this.daysBefore = daysBefore;
+            this.originator = originator;
+            this.timeToSend = timeToSend;
+            this.useLocalTime = useLocalTime;
+            this.template = template;
+        }
 
         /// <summary>
         /// key that is responsible for sending birthday greeting

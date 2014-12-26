@@ -5,8 +5,11 @@ using Intis.SDK.Entity;
 using System.Collections.Specialized;
 using Newtonsoft.Json.Linq;
 using System.Numerics;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.IO;
+using System.Web;
+using System.Web.Script.Serialization;
 
 namespace Intis.SDK
 {
@@ -22,87 +25,163 @@ namespace Intis.SDK
         public Balance getBalance()
         {
             NameValueCollection parameters = new NameValueCollection();
-            MemoryStream content = this.getContent("balance", parameters);
+            MemoryStream content = this.getStreamContent("balance", parameters);
 
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Balance));
-            Balance balance = serializer.ReadObject(content) as Balance;
+            try
+            {
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Balance));
+                Balance balance = serializer.ReadObject(content) as Balance;
 
-            return balance;
+                return balance;
+            }
+            catch (SerializationException ex)
+            {
+                _logger.Error("Error [getBalance]: " + ex.Message);
+                if (ex.InnerException != null)
+                    _logger.Error("Inner error: " + ex.InnerException.Message);
+                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
+                throw ex;
+            }
         }
 
         public List<PhoneBase> getPhoneBases()
         {
             NameValueCollection parameters = new NameValueCollection();
-            MemoryStream content = this.getContent("base", parameters);
+            MemoryStream content = this.getStreamContent("base", parameters);
 
             List<PhoneBase> bases = new List<PhoneBase>();
 
             DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
             settings.UseSimpleDictionaryFormat = true;
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, PhoneBase>), settings);
-            Dictionary<Int64, PhoneBase> phoneBases = serializer.ReadObject(content) as Dictionary<Int64, PhoneBase>;
-
-            foreach (var one in phoneBases)
+            try
             {
-                PhoneBase oneBase = one.Value;
-                oneBase.baseId = one.Key;
-                bases.Add(oneBase);
-            }
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, PhoneBase>), settings);
+                Dictionary<Int64, PhoneBase> phoneBases = serializer.ReadObject(content) as Dictionary<Int64, PhoneBase>;
+                foreach (var one in phoneBases)
+                {
+                    PhoneBase oneBase = one.Value;
+                    oneBase.baseId = one.Key;
+                    bases.Add(oneBase);
+                }
 
-            return bases;
+                return bases;
+            }
+            catch (SerializationException ex)
+            {
+                _logger.Error("Error [getPhoneBases]: " + ex.Message);
+                if (ex.InnerException != null)
+                    _logger.Error("Inner error: " + ex.InnerException.Message);
+                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
+                throw ex;
+            }
         }
 
-        //public List<Originator> getOriginators()
-        //{
-        //    NameValueCollection parameters = new NameValueCollection();
-        //    JToken content = this.getContent("senders", parameters);
+        public List<Originator> getOriginators()
+        {
+            NameValueCollection parameters = new NameValueCollection();
+            string content = this.getContent("senders", parameters);
 
-        //    List<Originator> originators = new List<Originator>();
-        //    foreach (var one in content)
-        //    {
-        //        originators.Add(new Originator(one));
-        //    }
+            List<Originator> originators = new List<Originator>();
+            Dictionary<string, string> list = new Dictionary<string, string>();
 
-        //    return originators;
-        //}
+            try
+            {
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                list = serializer.Deserialize<Dictionary<string, string>>(content);
+            }
+            catch (SerializationException ex)
+            {
+                _logger.Error("Error [getOriginators]: " + ex.Message);
+                if (ex.InnerException != null)
+                    _logger.Error("Inner error: " + ex.InnerException.Message);
+                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
+                throw ex;
+            }
 
-        //public List<PhoneBaseItem> getPhoneBaseItems(int baseId, int page = 1)
-        //{
-        //    NameValueCollection parameters = new NameValueCollection();
-        //    string baseIdStr = baseId.ToString();
-        //    string pageStr = page.ToString();
+            foreach (var one in list)
+            {
+                originators.Add(new Originator(one.Key, one.Value));
+            }
 
-        //    parameters.Add("base", baseIdStr);
-        //    parameters.Add("page", pageStr);
+            return originators;
+        }
 
-        //    JToken content = this.getContent("phone", parameters);
+        public List<PhoneBaseItem> getPhoneBaseItems(int baseId, int page = 1)
+        {
+            NameValueCollection parameters = new NameValueCollection();
+            parameters.Add("base", baseId.ToString());
+            parameters.Add("page", page.ToString());
 
-        //    List<PhoneBaseItem> phoneBaseItem = new List<PhoneBaseItem>();
+            MemoryStream content = this.getStreamContent("phone", parameters);
+            List<PhoneBaseItem> phoneBaseItem = new List<PhoneBaseItem>();
 
-        //    foreach (var one in content)
-        //    {
-        //        phoneBaseItem.Add(new PhoneBaseItem(one));
-        //    }
+            DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
+            settings.UseSimpleDictionaryFormat = true;
+            try
+            {
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, PhoneBaseItem>), settings);
+                Dictionary<Int64, PhoneBaseItem> items = serializer.ReadObject(content) as Dictionary<Int64, PhoneBaseItem>;
+                foreach (var one in items)
+                {
+                    PhoneBaseItem item = one.Value;
+                    item.phone = one.Key;
+                    phoneBaseItem.Add(item);
+                }
 
-        //    return phoneBaseItem;
-        //}
+                return phoneBaseItem;
+            }
+            catch (SerializationException ex)
+            {
+                _logger.Error("Error [getPhoneBaseItems]: " + ex.Message);
+                if (ex.InnerException != null)
+                    _logger.Error("Inner error: " + ex.InnerException.Message);
+                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
+                throw ex;
+            }
+        }
 
-        //public List<DeliveryStatus> getDeliveryStatus(BigInteger[] messageId)
-        //{
-        //    NameValueCollection parameters = new NameValueCollection();
-        //    string messageIdStr = String.Join(",", messageId.Select(p=>p.ToString()));
-        //    parameters.Add("state", messageIdStr);
+        public List<DeliveryStatus> getDeliveryStatus(BigInteger[] messageId)
+        {
+            NameValueCollection parameters = new NameValueCollection();
+            string messageIdStr = String.Join(",", messageId.Select(p => p.ToString()));
+            parameters.Add("state", messageIdStr);
 
-        //    JToken content = this.getContent("status", parameters);
+            MemoryStream content = this.getStreamContent("status", parameters);
 
-        //    List<DeliveryStatus> deliveryStatus = new List<DeliveryStatus>();
-        //    foreach (var one in content)
-        //    {
-        //        deliveryStatus.Add(new DeliveryStatus(one));
-        //    }
+            List<DeliveryStatus> deliveryStatus = new List<DeliveryStatus>();
 
-        //    return deliveryStatus;
-        //}
+            DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
+            settings.UseSimpleDictionaryFormat = true;
+            try
+            {
+                //DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, PhoneBaseItem>), settings);
+                //Dictionary<Int64, deliveryStatus> items = serializer.ReadObject(content) as Dictionary<Int64, PhoneBaseItem>;
+                //foreach (var one in items)
+                //{
+                //    PhoneBaseItem item = one.Value;
+                //    item.phone = one.Key;
+                //    deliveryStatus.Add(item);
+                //}
+
+                return deliveryStatus;
+            }
+            catch (SerializationException ex)
+            {
+                _logger.Error("Error [getDeliveryStatus]: " + ex.Message);
+                if (ex.InnerException != null)
+                    _logger.Error("Inner error: " + ex.InnerException.Message);
+                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
+                throw ex;
+            }
+
+
+            //foreach (var one in content)
+            //{
+            //    deliveryStatus.Add(new DeliveryStatus(one));
+            //}
+
+            return deliveryStatus;
+        }
 
         //public List<MessageSendingResult> sendMessage(Int64[] phone, string originator, string text)
         //{
@@ -123,77 +202,159 @@ namespace Intis.SDK
         //    return messages;
         //}
 
-        //public StopList checkStopList(Int64 phone)
-        //{
-        //    NameValueCollection parameters = new NameValueCollection();
-        //    parameters.Add("phone", phone.ToString());
+        public StopList checkStopList(Int64 phone)
+        {
+            NameValueCollection parameters = new NameValueCollection();
+            parameters.Add("phone", phone.ToString());
 
-        //    JToken content = this.getContent("find_on_stop", parameters);
+            MemoryStream content = this.getStreamContent("find_on_stop", parameters);
 
-        //    StopList messages = new StopList(content);
+            DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
+            settings.UseSimpleDictionaryFormat = true;
+            try
+            {
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, StopList>), settings);
+                Dictionary<Int64, StopList> check = serializer.ReadObject(content) as Dictionary<Int64, StopList>;
 
-        //    return messages;
-        //}
+                StopList stopList = null;
+                if (check.Count > 0)
+                {
+                    var one = check.First();
+                    stopList = one.Value;
+                    stopList.id = one.Key;
+                }
 
-        //public Int64 addToStopList(Int64 phone)
-        //{
-        //    NameValueCollection parameters = new NameValueCollection();
-        //    parameters.Add("phone", phone.ToString());
+                return stopList;
+            }
+            catch (SerializationException ex)
+            {
+                _logger.Error("Error [checkStopList]: " + ex.Message);
+                if (ex.InnerException != null)
+                    _logger.Error("Inner error: " + ex.InnerException.Message);
+                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
+                throw ex;
+            }
+        }
 
-        //    JToken content = this.getContent("add2stop", parameters);
+		public Int64 addToStopList(Int64 phone)
+		{
+			NameValueCollection parameters = new NameValueCollection();
+			parameters.Add("phone", phone.ToString());
 
-        //    JObject id = content as JObject;
-        //    var idt = (string)id.GetValue("id");
+			string content = this.getContent("add2stop", parameters);
 
-        //    return Int64.Parse(idt);
-        //}
+			try
+			{
+				JavaScriptSerializer serializer = new JavaScriptSerializer();
+				Dictionary<string, Int64> list = serializer.Deserialize<Dictionary<string, Int64>>(content);
 
-        //public List<Template> getTemplates()
-        //{
-        //    NameValueCollection parameters = new NameValueCollection();
+				return list.First().Value;
+			}
+			catch (SerializationException ex)
+			{
+				_logger.Error("Error [add2stop]: " + ex.Message);
+				if (ex.InnerException != null)
+					_logger.Error("Inner error: " + ex.InnerException.Message);
+				_logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
+				throw ex;
+			}
+		}
 
-        //    JToken content = this.getContent("template", parameters);
+		public List<Template> getTemplates()
+		{
+			NameValueCollection parameters = new NameValueCollection();
 
-        //    List<Template> template = new List<Template>();
-        //    foreach (var one in content)
-        //    {
-        //        template.Add(new Template(one));
-        //    }
+			MemoryStream content = this.getStreamContent("template", parameters);
 
-        //    return template;
-        //}
+			DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
+			settings.UseSimpleDictionaryFormat = true;
+			try
+			{
+				DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, Template>), settings);
+				Dictionary<Int64, Template> items = serializer.ReadObject(content) as Dictionary<Int64, Template>;
 
-        //public Int64 addTemplate(string title, string template)
-        //{
-        //    NameValueCollection parameters = new NameValueCollection();
-        //    parameters.Add("name", title);
-        //    parameters.Add("text", template);
+				List<Template> list = new List<Template>();
 
-        //    JToken content = this.getContent("add_template", parameters);
+				foreach (var one in items)
+				{
+					Template item = one.Value;
+					item.id = one.Key;
+					list.Add(item);
+				}
 
-        //    JObject id = content as JObject;
-        //    var idt = (string)id.GetValue("id");
+				return list;
+			}
+			catch (SerializationException ex)
+			{
+				_logger.Error("Error [template]: " + ex.Message);
+				if (ex.InnerException != null)
+					_logger.Error("Inner error: " + ex.InnerException.Message);
+				_logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
+				throw ex;
+			}
+		}
 
-        //    return Int64.Parse(idt);
-        //}
+		public Int64 addTemplate(string title, string template)
+		{
+			NameValueCollection parameters = new NameValueCollection();
+			parameters.Add("name", title);
+			parameters.Add("text", template);
 
-        //public List<DailyStats> getDailyStatsByMonth(int year, int month)
-        //{
-        //    DateTime date = new DateTime(year, month, 1, 0, 0, 0);
+			string content = this.getContent("add_template", parameters);
 
-        //    NameValueCollection parameters = new NameValueCollection();
-        //    parameters.Add("month", date.ToString("yyyy-MM"));
+			try
+			{
+				JavaScriptSerializer serializer = new JavaScriptSerializer();
+				Dictionary<string, Int64> list = serializer.Deserialize<Dictionary<string, Int64>>(content);
 
-        //    JToken content = this.getContent("stat_by_month", parameters);
+				return list.First().Value;
+			}
+			catch (SerializationException ex)
+			{
+				_logger.Error("Error [add_template]: " + ex.Message);
+				if (ex.InnerException != null)
+					_logger.Error("Inner error: " + ex.InnerException.Message);
+				_logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
+				throw ex;
+			}
+		}
 
-        //    List<DailyStats> dailyStats = new List<DailyStats>();
-        //    foreach (var one in content)
-        //    {
-        //        dailyStats.Add(new DailyStats(one));
-        //    }
+		//public List<DailyStats> getDailyStatsByMonth(int year, int month)
+		//{
+		//	DateTime date = new DateTime(year, month, 1, 0, 0, 0);
 
-        //    return dailyStats;
-        //}
+		//	NameValueCollection parameters = new NameValueCollection();
+		//	parameters.Add("month", date.ToString("yyyy-MM"));
+
+		//	MemoryStream content = this.getStreamContent("stat_by_month", parameters);
+
+		//	DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
+		//	settings.UseSimpleDictionaryFormat = true;
+		//	try
+		//	{
+		//		DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, DailyStats>), settings);
+		//		Dictionary<Int64, DailyStats> items = serializer.ReadObject(content) as Dictionary<Int64, DailyStats>;
+
+		//		List<DailyStats> list = new List<DailyStats>();
+
+		//		foreach (var one in items)
+		//		{
+		//			DailyStats item = one.Value;
+		//			//item.id = one.Key;
+		//			list.Add(item);
+		//		}
+
+		//		return list;
+		//	}
+		//	catch (SerializationException ex)
+		//	{
+		//		_logger.Error("Error [stat_by_month]: " + ex.Message);
+		//		if (ex.InnerException != null)
+		//			_logger.Error("Inner error: " + ex.InnerException.Message);
+		//		_logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
+		//		throw ex;
+		//	}
+		//}
 
         //public List<HLRResponse> makeHLRRequest(Int64[] phone)
         //{
