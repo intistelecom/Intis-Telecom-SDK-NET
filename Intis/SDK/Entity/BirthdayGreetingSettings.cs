@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Runtime.Serialization;
-
+﻿
 namespace Intis.SDK.Entity
 {
 	public class BirthdayGreetingSettings

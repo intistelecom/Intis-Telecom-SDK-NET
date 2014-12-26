@@ -1,61 +1,70 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace Intis.SDK.Entity
 {
+    [DataContract]
 	public class HLRResponse
 	{
+        [DataMember(Name = "id")]
 		private string id { get; set; }
+
+        [DataMember(Name = "destination")]
 		private Int64 destination { get; set; }
+
+        [DataMember(Name = "stat")]
 		private string status { get; set; }
+
+        [DataMember(Name = "IMSI")]
 		private string IMSI { get; set; }
-		private string MCC { get; set; }
-		private string MNC { get; set; }
+
+        [DataMember(Name = "mccmnc")]
+        private string mccmnc { get; set; }
+
+        [DataMember(Name = "ocn")]
 		private string originalCountryName { get; set; }
+
+        [DataMember(Name = "ocp")]
 		private string originalCountryCode { get; set; }
+
+        [DataMember(Name = "orn")]
 		private string originalNetworkName { get; set; }
+
+        [DataMember(Name = "onp")]
 		private string originalNetworkPrefix { get; set; }
+
+        [DataMember(Name = "rcn")]
 		private string roamingCountryName { get; set; }
+
+        [DataMember(Name = "rcp")]
 		private string roamingCountryPrefix { get; set; }
+
+        [DataMember(Name = "ron")]
 		private string roamingNetworkName { get; set; }
+
+        [DataMember(Name = "rnp")]
 		private string roamingNetworkPrefix { get; set; }
+
+        [DataMember(Name = "pcn")]
 		private string portedCountryName { get; set; }
+
+        [DataMember(Name = "pcp")]
 		private string portedCountryPrefix { get; set; }
+
+        [DataMember(Name = "pon")]
 		private string portedNetworkName { get; set; }
+
+        [DataMember(Name = "pnp")]
 		private string portedNetworkPrefix { get; set; }
+
+        [DataMember(Name = "ppm")]
 		private float pricePerMessage { get; set; }
+
+        [DataMember(Name = "is_ported")]
 		private bool ported { get; set; }
+
+        [DataMember(Name = "is_roaming")]
 		private bool inRoaming { get; set; }
-
-		public HLRResponse(JToken obj)
-		{
-			this.id = (string)obj["id"];
-			this.destination = Int64.Parse((string)obj["destination"]);
-			this.status = (string)obj["stat"];
-			this.IMSI = (string)obj["IMSI"];
-			var mccmnc = (string)obj["mccmnc"];
-			this.MCC = mccmnc.Substring(0, 3);
-			this.MNC = mccmnc.Substring(3);
-
-			this.originalCountryName = (string)obj["ocn"];
-			this.originalCountryCode = (string)obj["ocp"];
-			this.originalNetworkName = (string)obj["orn"];
-			this.originalNetworkPrefix = (string)obj["onp"];
-
-			this.roamingCountryName = (string)obj["rcn"];
-			this.roamingCountryPrefix = (string)obj["rcp"];
-			this.roamingNetworkName = (string)obj["ron"];
-			this.roamingNetworkPrefix = (string)obj["rnp"];
-
-			this.portedCountryName = (string)obj["pcn"];
-			this.portedCountryPrefix = (string)obj["pcp"];
-			this.portedNetworkName = (string)obj["pon"];
-			this.portedNetworkPrefix = (string)obj["pnp"];
-
-			this.pricePerMessage = (float)obj["ppm"];
-			this.ported = (bool)obj["is_ported"];
-			this.inRoaming = (bool)obj["is_roaming"];
-		}
 
         /// <summary>
         /// Number ID
@@ -99,7 +108,7 @@ namespace Intis.SDK.Entity
         /// <returns>string</returns>
         public string getMCC()
         {
-            return this.MCC;
+            return mccmnc.Substring(0, 3);
         }
 
         /// <summary>
@@ -108,7 +117,7 @@ namespace Intis.SDK.Entity
         /// <returns>string</returns>
         public string getMNC()
         {
-            return this.MNC;
+            return mccmnc.Substring(3);
         }
 
         /// <summary>

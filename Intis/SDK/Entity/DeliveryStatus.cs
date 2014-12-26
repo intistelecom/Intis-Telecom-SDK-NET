@@ -1,27 +1,24 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Numerics;
+﻿using System.Runtime.Serialization;
 
 namespace Intis.SDK.Entity
 {
+    [DataContract]
     public class DeliveryStatus
     {
-		private BigInteger messageId { get; set; }
+		public string messageId { get; set; }
+
+        [DataMember(Name = "status")]
         private string messageStatus { get; set; }
 
+        [DataMember(Name = "time")]
 		private string createdAt { get; set;}
 
-		public DeliveryStatus(JToken obj)
-        {
-			this.messageId = BigInteger.Parse(obj.Path);
-			this.messageStatus = (string)obj.First["status"];
-			this.createdAt = (string)obj.First["time"];
-        }
 
         /// <summary>
         /// Message ID
         /// </summary>
-        /// <returns>integer</returns>
-        public BigInteger getMessageId()
+        /// <returns>string</returns>
+        public string getMessageId()
         {
             return this.messageId;
         }

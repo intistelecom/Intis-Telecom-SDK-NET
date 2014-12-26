@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Intis.SDK.Entity;
-using System.Numerics;
 
 namespace Intis.SDK
 {
@@ -38,7 +37,7 @@ namespace Intis.SDK
         /// </summary>
         /// <param name="messageId">Message ID</param>
         /// <returns>PhoneBaseItem[]</returns>
-        List<DeliveryStatus> getDeliveryStatus(BigInteger[] messageId);
+        List<DeliveryStatus> getDeliveryStatus(string[] messageId);
 
         /// <summary>
         /// Send a message

@@ -1,36 +1,28 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Numerics;
+﻿using System;
+using System.Runtime.Serialization;
 
 namespace Intis.SDK.Entity
 {
+    [DataContract]
     public class MessageSendingResult
     {
-		private Int64 phone { get; set; }
-		private BigInteger messageId { get; set; }
+		public Int64 phone { get; set; }
+
+        [DataMember(Name = "id_sms")]
+		private string messageId { get; set; }
+
+        [DataMember(Name = "cost")]
         private float cost { get; set; }
+
+        [DataMember(Name = "currency")]
         private string currency { get; set; }
+
+        [DataMember(Name = "count_sms")]
         private int messagesCount { get; set; }
+
+        [DataMember(Name = "error")]
         private string error { get; set; }
 
-		public MessageSendingResult(JToken obj)
-        {
-			var result = obj as JObject;
-			foreach (var one in result)
-			{
-				this.phone = Int64.Parse(one.Key);
-				var more = one.Value;
-				this.error = (string)more["error"];
-				var err = this.getError();
-				if (this.getError() == "0") { 
-					var id = (string)more["id_sms"];
-					this.messageId = BigInteger.Parse(id);
-					this.cost = (float)more["cost"];
-					this.messagesCount = (int)more["count_sms"];
-					this.currency = (string)more["currency"];
-				}
-			}
-        }
 
         /// <summary>
         /// Phone number
@@ -44,8 +36,8 @@ namespace Intis.SDK.Entity
         /// <summary>
         /// Message ID
         /// </summary>
-        /// <returns>integer</returns>
-        public BigInteger getMessageId()
+        /// <returns>string</returns>
+        public string getMessageId()
         {
             return this.messageId;
         }

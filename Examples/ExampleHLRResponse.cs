@@ -17,32 +17,32 @@ namespace Examples
 			string apiHost = "http://dev.sms16.ru/get/";
 			IntisClient client = new IntisClient(login, apiKey, apiHost);
 
-            //Int64[] phones = new Int64[] { 79802503672, 79042181018 };
-            //List<HLRResponse> HLRResponse = client.makeHLRRequest(phones);
-            //foreach (HLRResponse one in HLRResponse)
-            //{
-            //    one.getId();
-            //    one.getIMSI();
-            //    one.getDestination();
-            //    one.getMCC();
-            //    one.getMNC();
-            //    one.getOriginalCountryCode();
-            //    one.getOriginalCountryName();
-            //    one.getOriginalNetworkName();
-            //    one.getOriginalNetworkPrefix();
-            //    one.getPortedCountryName();
-            //    one.getPortedCountryPrefix();
-            //    one.getPortedNetworkName();
-            //    one.getPortedNetworkPrefix();
-            //    one.getPricePerMessage();
-            //    one.getRoamingCountryName();
-            //    one.getRoamingCountryPrefix();
-            //    one.getRoamingNetworkName();
-            //    one.getRoamingNetworkPrefix();
-            //    one.getStatus();
-            //    one.isPorted();
-            //    one.isInRoaming();
-            //}
+            Int64[] phones = new Int64[] { 79802503672, 79042181018 };
+            List<HLRResponse> HLRResponse = client.makeHLRRequest(phones);
+            foreach (HLRResponse one in HLRResponse)
+            {
+                one.getId();
+                one.getIMSI();
+                one.getDestination();
+                one.getMCC();
+                one.getMNC();
+                one.getOriginalCountryCode();
+                one.getOriginalCountryName();
+                one.getOriginalNetworkName();
+                one.getOriginalNetworkPrefix();
+                one.getPortedCountryName();
+                one.getPortedCountryPrefix();
+                one.getPortedNetworkName();
+                one.getPortedNetworkPrefix();
+                one.getPricePerMessage();
+                one.getRoamingCountryName();
+                one.getRoamingCountryPrefix();
+                one.getRoamingNetworkName();
+                one.getRoamingNetworkPrefix();
+                one.getStatus();
+                one.isPorted();
+                one.isInRoaming();
+            }
 		}
 	}
 }

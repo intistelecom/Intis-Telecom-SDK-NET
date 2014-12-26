@@ -1,23 +1,20 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Runtime.Serialization;
 
 namespace Intis.SDK.Entity
 {
+    [DataContract]
     public class Stats
     {
-        private string state {get; set;}
-        private float cost { get; set; }
-        private string currency { get; set; }
-        private int count { get; set; }
+        public string state {get; set;}
 
-		public Stats(JProperty obj)
-        {
-		    this.state = obj.Name;
-			foreach (var val in obj.Value)
-			{
-				this.cost = (float)val["cost"];
-				this.count = (int)val["parts"];
-			}
-        }
+        [DataMember(Name = "cost")]
+        private float cost { get; set; }
+
+        [DataMember(Name = "currency")]
+        private string currency { get; set; }
+
+        [DataMember(Name = "parts")]
+        private int count { get; set; }
 
         /// <summary>
         /// Status of message

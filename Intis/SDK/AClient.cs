@@ -3,7 +3,6 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Collections.Specialized;
-using Newtonsoft.Json.Linq;
 using log4net;
 using System.Web.Script.Serialization;
 using Intis.SDK.Entity;
@@ -36,7 +35,7 @@ namespace Intis.SDK
             NameValueCollection allParameters = this.getParameters(parameters);
             string url = apiHost + scriptName + ".php";
             string result = this.getContentFromApi(url, allParameters);
-            //this.checkException(result);
+            this.checkException(result);
 
             return result;
         }
@@ -99,17 +98,23 @@ namespace Intis.SDK
             return sBuilder.ToString();
         }
 
-		private void checkException(JToken result)
+		private void checkException(string result)
         {
             if (result.Count() == 0)
             {
                 _logger.Error("Empty result: [" + result + "]. SDKException(0)");
                 throw new SDKException(0);
             }
-            if (result.First.Path == "error")
+
+            var t = result.Substring(0, 8);
+
+            if (result.Substring(0, 8) == "{\"error\"")
             {
-                _logger.Error("Error: [" + result + "]. SDKException(" + (int)result.First + ")");
-                throw new SDKException((int)result.First);
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                Dictionary<string, int> list = serializer.Deserialize<Dictionary<string, int>>(result);
+
+                _logger.Error("Error: [" + result + "]. SDKException(" + list.First().Value + ")");
+                throw new SDKException(list.First().Value);
             }
         }
 

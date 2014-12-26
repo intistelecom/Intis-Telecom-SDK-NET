@@ -1,33 +1,22 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
+﻿using System.Runtime.Serialization;
 
 namespace Intis.SDK.Entity
 {
+    [DataContract]
     public class HLRStatItem : HLRResponse
     {
-		private Int64 phone { get; set; }
+        [DataMember(Name = "message_id")]
 		private string messageId { get; set; }
+
+        [DataMember(Name = "total_price")]
         private float totalPrice { get; set; }
+
+        [DataMember(Name = "request_id")]
 		private string requestId { get; set; }
+
+        [DataMember(Name = "request_time")]
         private string requestTime { get; set; }
 
-        public HLRStatItem(JToken obj) : base(obj)
-        {
-			this.phone = Int64.Parse((string)obj["destination"]);
-			this.messageId = (string)obj["message_id"];
-			this.totalPrice = (float)obj["total_price"];
-			this.requestId = (string)obj["request_id"];
-			this.requestTime = (string)obj["request_time"];
-        }
-
-        /// <summary>
-        /// Phone number
-        /// </summary>
-        /// <returns>integer</returns>
-        public Int64 getPhone()
-        {
-            return this.phone;
-        }
 
         /// <summary>
         /// Message ID

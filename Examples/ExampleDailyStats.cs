@@ -17,19 +17,19 @@ namespace Examples
 			string apiHost = "http://dev.sms16.ru/get/";
 			IntisClient client = new IntisClient(login, apiKey, apiHost);
 
-            //List<DailyStats> stats = client.getDailyStatsByMonth(2014, 10);
-            //foreach (DailyStats one in stats)
-            //{
-            //    one.getDay();
-            //    var s = one.getStats();
-            //    foreach (Stats i in s)
-            //    {
-            //        var t = i.getCost();
-            //        i.getCount();
-            //        i.getCurrency();
-            //        i.getState();
-            //    }
-            //}
+            List<DailyStats> stats = client.getDailyStatsByMonth(2014, 10);
+            foreach (DailyStats one in stats)
+            {
+                one.getDay();
+                var s = one.getStats();
+                foreach (Stats i in s)
+                {
+                    var t = i.getCost();
+                    i.getCount();
+                    i.getCurrency();
+                    i.getState();
+                }
+            }
 		}
 	}
 }

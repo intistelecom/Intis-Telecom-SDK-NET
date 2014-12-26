@@ -17,15 +17,15 @@ namespace Examples
 			string apiHost = "http://dev.sms16.ru/get/";
 			IntisClient client = new IntisClient(login, apiKey, apiHost);
 
-            //List<IncomingMessage> messages = client.getIncomingMessages("2014-10-27");
-            //foreach (IncomingMessage one in messages)
-            //{
-            //    one.getMessageId();
-            //    one.getOriginator();
-            //    one.getPrefix();
-            //    one.getReceivedAt();
-            //    one.getText();
-            //}
+            List<IncomingMessage> messages = client.getIncomingMessages("2014-10-27");
+            foreach (IncomingMessage one in messages)
+            {
+                one.getMessageId();
+                one.getOriginator();
+                one.getPrefix();
+                one.getReceivedAt();
+                one.getText();
+            }
 		}
 	}
 }

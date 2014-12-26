@@ -1,7 +1,6 @@
 ﻿using Intis.SDK;
 using Intis.SDK.Entity;
 using System.Collections.Generic;
-using System.Numerics;
 
 namespace Examples
 {
@@ -15,15 +14,15 @@ namespace Examples
 
 			IntisClient client = new IntisClient(login, apiKey, apiHost);
 
-			BigInteger[] messageId = new BigInteger[2] { 2, 4 };
+			string[] messageId = new string[1] { "4196226820248326060001" };
 
-            //List<DeliveryStatus> status = client.getDeliveryStatus(messageId);
-            //foreach (DeliveryStatus one in status)
-            //{
-            //    one.getMessageId();
-            //    one.getMessageStatus();
-            //    one.getCreatedAt();
-            //}
+            List<DeliveryStatus> status = client.getDeliveryStatus(messageId);
+            foreach (DeliveryStatus one in status)
+            {
+                one.getMessageId();
+                one.getMessageStatus();
+                one.getCreatedAt();
+            }
 		}
 	}
 }

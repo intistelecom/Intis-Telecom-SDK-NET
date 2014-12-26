@@ -1,29 +1,33 @@
-﻿using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Intis.SDK.Entity
 {
+    [DataContract]
     public class DailyStats
     {
         private string day{get; set;}
         private List<Stats> stats{get; set;}
 
-        public DailyStats(JToken obj)
+        public DailyStats(KeyValuePair<string, Dictionary<string, Stats[]>[]> obj)
         {
-		    this.stats = new List<Stats>();
-			foreach (var one in obj as JObject)
-			{
-				this.day = one.Key;
-				foreach (var state in one.Value)
-				{
-					foreach (var val in state)
-					{
-						this.stats.Add(new Stats(val as JProperty));
-					}
-					
-				}
-			}
-	    }
+            day = obj.Key;
+
+            List<Stats> stats = new List<Stats>();
+            foreach (var one in obj.Value)
+            {
+                foreach (var item in one)
+                {
+                    var st = item.Key;
+                    foreach (var stObj in item.Value)
+                    {
+                        stObj.state = st;
+                        stats.Add(stObj);
+                    }
+                }   
+            }
+            this.stats = stats;
+        }
 
         /// <summary>
         /// day for statistics output

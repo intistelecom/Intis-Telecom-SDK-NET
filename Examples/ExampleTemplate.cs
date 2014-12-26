@@ -17,14 +17,14 @@ namespace Examples
 			string apiHost = "http://dev.sms16.ru/get/";
 			IntisClient client = new IntisClient(login, apiKey, apiHost);
 
-			List<Template> templates = client.getTemplates();
-			foreach (Template one in templates)
-			{
-				one.getId();
-				var t = one.getTitle();
-				var y = one.getTemplate();
-				one.getCreatedAt();
-			}
+            List<Template> templates = client.getTemplates();
+            foreach (Template one in templates)
+            {
+                one.getId();
+                one.getTitle();
+                one.getTemplate();
+                one.getCreatedAt();
+            }
 		}
 	}
 }

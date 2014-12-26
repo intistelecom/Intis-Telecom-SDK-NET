@@ -1,6 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Runtime.Serialization;
 
 namespace Intis.SDK.Entity
@@ -19,9 +17,6 @@ namespace Intis.SDK.Entity
 
         [DataMember(Name = "pages")]
         private int pages { get; set; }
-
-
-
 
         [DataMember(Name = "on_birth")]
         private int enabled { get; set; }

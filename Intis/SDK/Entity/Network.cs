@@ -1,14 +1,13 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using System.Runtime.Serialization;
 
 namespace Intis.SDK.Entity
 {
+    [DataContract]
     public class Network
     {
+        [DataMember(Name = "operator")]
         private string title {get; set;}
 
-        public Network(JToken obj) {
-			this.title = (string)obj["operator"];
-        }
 
         /// <summary>
         /// Operator name

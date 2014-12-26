@@ -19,17 +19,17 @@ namespace Examples
 			IntisClient client = new IntisClient(login, apiKey, apiHost);
 
 
-            //Int64[] phones = new Int64[2] { 79000000000, 79000000001 };
-            //List<MessageSendingResult> status = client.sendMessage(phones, "smstest", "test");
-            //foreach (MessageSendingResult one in status)
-            //{
-            //    one.getPhone();
-            //    one.getMessageId();
-            //    one.getMessagesCount();
-            //    one.getCost();
-            //    one.getCurrency();
-            //    one.getError();
-            //}
+            Int64[] phones = new Int64[2] { 79000000000, 79000000001 };
+            List<MessageSendingResult> status = client.sendMessage(phones, "smstest", "test");
+            foreach (MessageSendingResult one in status)
+            {
+                one.getPhone();
+                one.getMessageId();
+                one.getMessagesCount();
+                one.getCost();
+                one.getCurrency();
+                one.getError();
+            }
 		}
 	}
 }
