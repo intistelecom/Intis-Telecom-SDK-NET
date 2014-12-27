@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace Intis.SDK
+namespace Intis.SDK.Exceptions
 {
 	[Serializable]
 	public class SDKException : Exception
 	{
+        public int Code { get; private set; }
 	    private static string GetMessage(int code){
 			Dictionary<int, string> messages = new Dictionary<int, string>()
 			{
@@ -51,13 +52,17 @@ namespace Intis.SDK
 			: base() { }
 
 		public SDKException(int code)
-			: base(GetMessage(code)) { }
+			: base(GetMessage(code)) {
+                Code = code;
+        }
 
 		public SDKException(string format, params object[] args)
 			: base(string.Format(format, args)) { }
 
 		public SDKException(int code, Exception innerException)
-			: base(GetMessage(code), innerException) { }
+			: base(GetMessage(code), innerException) {
+                Code = code;
+            }
 
 		public SDKException(string format, Exception innerException, params object[] args)
 			: base(string.Format(format, args), innerException) { }

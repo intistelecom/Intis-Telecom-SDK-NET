@@ -3,13 +3,11 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Collections.Specialized;
-using log4net;
 using System.Web.Script.Serialization;
-using Intis.SDK.Entity;
-using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Collections.Generic;
 using System.Web;
+using Intis.SDK.Exceptions;
 
 namespace Intis.SDK
 {
@@ -18,7 +16,6 @@ namespace Intis.SDK
         protected string login;
         protected string apiKey;
         protected string apiHost;
-        public static readonly ILog _logger = LogManager.GetLogger("IntisSDK");
 
         public MemoryStream getStreamContent(string scriptName, NameValueCollection parameters)
         {
@@ -43,7 +40,6 @@ namespace Intis.SDK
         private string getTimestamp() {
             WebClient client = new WebClient();
             string timestamp = client.DownloadString(apiHost + "timestamp.php");
-            _logger.Info("Get timestamp: [" + timestamp + "]");
             return timestamp;
         }
 
@@ -67,7 +63,6 @@ namespace Intis.SDK
 				}
             }
             string sig = this.GetSignature(parameters);
-            _logger.Info("Signature: [" + sig + "]");
             parameters.Add("signature", sig);
 
             return parameters;
@@ -80,7 +75,6 @@ namespace Intis.SDK
                 str = str + parameters[item];
             }
             str = str + apiKey;
-            _logger.Info("String for the calculation of the signature: [" + str + "]");
 
             return this.GetMd5Hash(str);
         }
@@ -102,7 +96,6 @@ namespace Intis.SDK
         {
             if (result.Count() == 0)
             {
-                _logger.Error("Empty result: [" + result + "]. SDKException(0)");
                 throw new SDKException(0);
             }
 
@@ -113,7 +106,6 @@ namespace Intis.SDK
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 Dictionary<string, int> list = serializer.Deserialize<Dictionary<string, int>>(result);
 
-                _logger.Error("Error: [" + result + "]. SDKException(" + list.First().Value + ")");
                 throw new SDKException(list.First().Value);
             }
         }

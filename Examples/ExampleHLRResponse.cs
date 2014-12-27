@@ -17,7 +17,7 @@ namespace Examples
 			string apiHost = "http://dev.sms16.ru/get/";
 			IntisClient client = new IntisClient(login, apiKey, apiHost);
 
-            Int64[] phones = new Int64[] { 79802503672, 79042181018 };
+            Int64[] phones = new Int64[] { 79800000000, 79040000000 };
             List<HLRResponse> HLRResponse = client.makeHLRRequest(phones);
             foreach (HLRResponse one in HLRResponse)
             {

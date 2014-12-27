@@ -1,4 +1,5 @@
 ﻿using Intis.SDK.Entity;
+using Intis.SDK.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -33,11 +34,7 @@ namespace Intis.SDK
             }
             catch (SerializationException ex)
             {
-                _logger.Error("Error [getBalance]: " + ex.Message);
-                if (ex.InnerException != null)
-                    _logger.Error("Inner error: " + ex.InnerException.Message);
-                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
-                throw ex;
+                throw new BalanceException(parameters, ex);
             }
         }
 
@@ -65,11 +62,7 @@ namespace Intis.SDK
             }
             catch (SerializationException ex)
             {
-                _logger.Error("Error [getPhoneBases]: " + ex.Message);
-                if (ex.InnerException != null)
-                    _logger.Error("Inner error: " + ex.InnerException.Message);
-                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
-                throw ex;
+                throw new PhoneBasesException(parameters, ex);
             }
         }
 
@@ -85,22 +78,18 @@ namespace Intis.SDK
             {
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 list = serializer.Deserialize<Dictionary<string, string>>(content);
+
+                foreach (var one in list)
+                {
+                    originators.Add(new Originator(one.Key, one.Value));
+                }
+
+                return originators;
             }
             catch (SerializationException ex)
             {
-                _logger.Error("Error [getOriginators]: " + ex.Message);
-                if (ex.InnerException != null)
-                    _logger.Error("Inner error: " + ex.InnerException.Message);
-                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
-                throw ex;
+                throw new OriginatorException(parameters, ex);
             }
-
-            foreach (var one in list)
-            {
-                originators.Add(new Originator(one.Key, one.Value));
-            }
-
-            return originators;
         }
 
         public List<PhoneBaseItem> getPhoneBaseItems(int baseId, int page = 1)
@@ -129,11 +118,7 @@ namespace Intis.SDK
             }
             catch (SerializationException ex)
             {
-                _logger.Error("Error [getPhoneBaseItems]: " + ex.Message);
-                if (ex.InnerException != null)
-                    _logger.Error("Inner error: " + ex.InnerException.Message);
-                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
-                throw ex;
+                throw new PhoneBaseItemException(parameters, ex);
             }
         }
 
@@ -164,11 +149,7 @@ namespace Intis.SDK
             }
             catch (SerializationException ex)
             {
-                _logger.Error("Error [getDeliveryStatus]: " + ex.Message);
-                if (ex.InnerException != null)
-                    _logger.Error("Inner error: " + ex.InnerException.Message);
-                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
-                throw ex;
+                throw new DeliveryStatusException(parameters, ex);
             }
         }
 
@@ -200,11 +181,7 @@ namespace Intis.SDK
             }
             catch (SerializationException ex)
             {
-                _logger.Error("Error [sendMessage]: " + ex.Message);
-                if (ex.InnerException != null)
-                    _logger.Error("Inner error: " + ex.InnerException.Message);
-                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
-                throw ex;
+                throw new MessageSendingResultException(parameters, ex);
             }
         }
 
@@ -234,11 +211,7 @@ namespace Intis.SDK
             }
             catch (SerializationException ex)
             {
-                _logger.Error("Error [checkStopList]: " + ex.Message);
-                if (ex.InnerException != null)
-                    _logger.Error("Inner error: " + ex.InnerException.Message);
-                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
-                throw ex;
+                throw new StopListException(parameters, ex);
             }
         }
 
@@ -258,11 +231,7 @@ namespace Intis.SDK
 			}
 			catch (SerializationException ex)
 			{
-                _logger.Error("Error [addToStopList]: " + ex.Message);
-				if (ex.InnerException != null)
-					_logger.Error("Inner error: " + ex.InnerException.Message);
-				_logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
-				throw ex;
+				throw new AddToStopListException(parameters, ex);
 			}
 		}
 
@@ -292,11 +261,7 @@ namespace Intis.SDK
 			}
 			catch (SerializationException ex)
 			{
-                _logger.Error("Error [getTemplates]: " + ex.Message);
-				if (ex.InnerException != null)
-					_logger.Error("Inner error: " + ex.InnerException.Message);
-				_logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
-				throw ex;
+				throw new TemplateException(parameters, ex);
 			}
 		}
 
@@ -317,11 +282,7 @@ namespace Intis.SDK
 			}
 			catch (SerializationException ex)
 			{
-                _logger.Error("Error [addTemplate]: " + ex.Message);
-				if (ex.InnerException != null)
-					_logger.Error("Inner error: " + ex.InnerException.Message);
-				_logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
-				throw ex;
+				throw new AddTemplateException(parameters, ex);
 			}
 		}
 
@@ -354,11 +315,7 @@ namespace Intis.SDK
             }
             catch (SerializationException ex)
             {
-                _logger.Error("Error [getDailyStatsByMonth]: " + ex.Message);
-                if (ex.InnerException != null)
-                    _logger.Error("Inner error: " + ex.InnerException.Message);
-                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
-                throw ex;
+                throw new DailyStatsException(parameters, ex);
             }
         }
 
@@ -380,11 +337,7 @@ namespace Intis.SDK
             }
             catch (SerializationException ex)
             {
-                _logger.Error("Error [makeHLRRequest]: " + ex.Message);
-                if (ex.InnerException != null)
-                    _logger.Error("Inner error: " + ex.InnerException.Message);
-                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
-                throw ex;
+                throw new HLRResponseException(parameters, ex);
             }
         }
 
@@ -414,11 +367,7 @@ namespace Intis.SDK
             }
             catch (SerializationException ex)
             {
-                _logger.Error("Error [getHlrStats]: " + ex.Message);
-                if (ex.InnerException != null)
-                    _logger.Error("Inner error: " + ex.InnerException.Message);
-                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
-                throw ex;
+                throw new HLRStatItemException(parameters, ex);
             }
         }
 
@@ -438,11 +387,7 @@ namespace Intis.SDK
             }
             catch (SerializationException ex)
             {
-                _logger.Error("Error [getNetworkByPhone]: " + ex.Message);
-                if (ex.InnerException != null)
-                    _logger.Error("Inner error: " + ex.InnerException.Message);
-                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
-                throw ex;
+                throw new NetworkException(parameters, ex);
             }
         }
 
@@ -473,11 +418,7 @@ namespace Intis.SDK
             }
             catch (SerializationException ex)
             {
-                _logger.Error("Error [getIncomingMessages]: " + ex.Message);
-                if (ex.InnerException != null)
-                    _logger.Error("Inner error: " + ex.InnerException.Message);
-                _logger.Error("Parameters [" + String.Join(", ", parameters.AllKeys.Select(a => a + "=" + parameters[a])) + "]");
-                throw ex;
+                throw new IncomingMessageException(parameters, ex);
             }
         }
     }
