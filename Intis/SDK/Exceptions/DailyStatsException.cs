@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Intis.SDK.Exceptions
 {
-    class DailyStatsException : SDKSerializationException
+    public class DailyStatsException : SDKSerializationException
     {
         public DailyStatsException(NameValueCollection parameters)
             : base(parameters){}

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Intis.SDK.Exceptions
 {
-    class DeliveryStatusException : SDKSerializationException
+    public class DeliveryStatusException : SDKSerializationException
     {
         public DeliveryStatusException(NameValueCollection parameters)
             : base(parameters){}

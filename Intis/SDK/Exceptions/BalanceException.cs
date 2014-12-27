@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Intis.SDK.Exceptions
 {
-    class BalanceException : SDKSerializationException
+    public class BalanceException : SDKSerializationException
     {
         public BalanceException(NameValueCollection parameters)
             : base(parameters){}

@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Intis.SDK.Exceptions
 {
-    class SDKSerializationException : SerializationException
+    public class SDKSerializationException : SerializationException
     {
         public NameValueCollection Parameters { get; set; }
 

@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Intis.SDK.Exceptions
 {
-    class HLRResponseException : SDKSerializationException
+    public class HLRResponseException : SDKSerializationException
     {
         public HLRResponseException(NameValueCollection parameters)
             : base(parameters){}
