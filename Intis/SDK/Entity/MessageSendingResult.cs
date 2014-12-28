@@ -6,76 +6,45 @@ namespace Intis.SDK.Entity
     [DataContract]
     public class MessageSendingResult
     {
-		public Int64 phone { get; set; }
-
-        [DataMember(Name = "id_sms")]
-		private string messageId { get; set; }
-
-        [DataMember(Name = "cost")]
-        private float cost { get; set; }
-
-        [DataMember(Name = "currency")]
-        private string currency { get; set; }
-
-        [DataMember(Name = "count_sms")]
-        private int messagesCount { get; set; }
-
-        [DataMember(Name = "error")]
-        private string error { get; set; }
-
-
         /// <summary>
         /// Phone number
         /// </summary>
         /// <returns>integer</returns>
-        public Int64 getPhone()
-        {
-            return this.phone;
-        }
+		public Int64 Phone { get; set; }
 
         /// <summary>
         /// Message ID
         /// </summary>
         /// <returns>string</returns>
-        public string getMessageId()
-        {
-            return this.messageId;
-        }
+        [DataMember(Name = "id_sms")]
+        public string MessageId { get; set; }
 
         /// <summary>
         /// Price for message
         /// </summary>
         /// <returns>float</returns>
-        public float getCost()
-        {
-            return this.cost;
-        }
+        [DataMember(Name = "cost")]
+        public float Cost { get; set; }
 
         /// <summary>
         /// Name of currency
         /// </summary>
         /// <returns>string</returns>
-        public string getCurrency()
-        {
-            return this.currency;
-        }
+        [DataMember(Name = "currency")]
+        public string Currency { get; set; }
 
         /// <summary>
         /// Number of message parts
         /// </summary>
         /// <returns>integer</returns>
-        public int getMessagesCount()
-        {
-            return this.messagesCount;
-        }
+        [DataMember(Name = "count_sms")]
+        public int MessagesCount { get; set; }
 
         /// <summary>
         /// Error text in SMS sending
         /// </summary>
         /// <returns>string</returns>
-        public string getError()
-        {
-            return this.error;
-        }
+        [DataMember(Name = "error")]
+        public string Error { get; set; }
     }
 }

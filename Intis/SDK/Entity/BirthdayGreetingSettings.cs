@@ -3,75 +3,50 @@ namespace Intis.SDK.Entity
 {
 	public class BirthdayGreetingSettings
 	{
-		private int enabled { get; set; }
-		private int daysBefore { get; set; }
-		private string originator { get; set; }
-		private string timeToSend { get; set; }
-		private int useLocalTime { get; set; }
-		private string template { get; set; }
-
-        public BirthdayGreetingSettings(int enabled, int daysBefore, string originator, string timeToSend, int useLocalTime, string template)
-        {
-            this.enabled = enabled;
-            this.daysBefore = daysBefore;
-            this.originator = originator;
-            this.timeToSend = timeToSend;
-            this.useLocalTime = useLocalTime;
-            this.template = template;
-        }
-
         /// <summary>
         /// key that is responsible for sending birthday greeting
         /// </summary>
         /// <returns>integer</returns>
-        public int getEnebled()
-        {
-            return this.enabled;
-        }
+		public int Enabled { get; set; }
 
         /// <summary>
         /// number of days to send greetings before
         /// </summary>
         /// <returns>integer</returns>
-        public int getDaysBefore()
-        {
-            return this.daysBefore;
-        }
+        public int DaysBefore { get; set; }
 
         /// <summary>
         /// sender name of greeting SMS
         /// </summary>
         /// <returns>integer</returns>
-        public string getOriginator()
-        {
-            return this.originator;
-        }
+        public string Originator { get; set; }
 
         /// <summary>
         /// time for sending greetings
         /// </summary>
         /// <returns>integer</returns>
-        public string getTimeToSend()
-        {
-            return this.timeToSend;
-        }
+		public string TimeToSend { get; set; }
 
         /// <summary>
         /// use local time of subscriber while SMS sending
         /// </summary>
         /// <returns>integer</returns>
-        public int getUselocalTime()
-        {
-            return this.useLocalTime;
-        }
+        public int UseLocalTime { get; set; }
 
         /// <summary>
         /// text template for sending greetings
         /// </summary>
         /// <returns>string</returns>
-        public string getTemplate()
+		public string Template { get; set; }
+
+        public BirthdayGreetingSettings(int enabled, int daysBefore, string originator, string timeToSend, int useLocalTime, string template)
         {
-            return this.template;
+            Enabled = enabled;
+            DaysBefore = daysBefore;
+            Originator = originator;
+            TimeToSend = timeToSend;
+            UseLocalTime = useLocalTime;
+            Template = template;
         }
 	}
 }

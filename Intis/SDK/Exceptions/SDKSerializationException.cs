@@ -3,22 +3,21 @@ using System.Runtime.Serialization;
 
 namespace Intis.SDK.Exceptions
 {
-    public class SDKSerializationException : SerializationException
+    public class SdkSerializationException : SerializationException
     {
         public NameValueCollection Parameters { get; set; }
 
-        public SDKSerializationException()
-			: base() { }
+        public SdkSerializationException(){ }
 
-        public SDKSerializationException(NameValueCollection parameters)
+        public SdkSerializationException(NameValueCollection parameters)
         {
-            this.Parameters = parameters;
+            Parameters = parameters;
         }
 
-        public SDKSerializationException(NameValueCollection parameters, SerializationException innerException)
+        public SdkSerializationException(NameValueCollection parameters, SerializationException innerException)
             : base("Error serialization", innerException)
         {
-            this.Parameters = parameters;
+            Parameters = parameters;
         }
     }
 }

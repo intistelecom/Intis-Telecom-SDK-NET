@@ -3,7 +3,6 @@ using Intis.SDK.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
@@ -15,20 +14,20 @@ namespace Intis.SDK
     {
         public IntisClient(string login, string apiKey, string apiHost)
         {
-            this.login = login;
-            this.apiKey = apiKey;
-            this.apiHost = apiHost;
+            Login = login;
+            ApiKey = apiKey;
+            ApiHost = apiHost;
         }
 
-        public Balance getBalance()
+        public Balance GetBalance()
         {
-            NameValueCollection parameters = new NameValueCollection();
-            MemoryStream content = this.getStreamContent("balance", parameters);
+            var parameters = new NameValueCollection();
+            var content = GetStreamContent("balance", parameters);
 
             try
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Balance));
-                Balance balance = serializer.ReadObject(content) as Balance;
+                var serializer = new DataContractJsonSerializer(typeof(Balance));
+                var balance = serializer.ReadObject(content) as Balance;
 
                 return balance;
             }
@@ -38,23 +37,29 @@ namespace Intis.SDK
             }
         }
 
-        public List<PhoneBase> getPhoneBases()
+        public List<PhoneBase> GetPhoneBases()
         {
-            NameValueCollection parameters = new NameValueCollection();
-            MemoryStream content = this.getStreamContent("base", parameters);
+            var parameters = new NameValueCollection();
+            var content = GetStreamContent("base", parameters);
 
-            List<PhoneBase> bases = new List<PhoneBase>();
+            var bases = new List<PhoneBase>();
 
-            DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
-            settings.UseSimpleDictionaryFormat = true;
+            var settings = new DataContractJsonSerializerSettings
+            {
+                UseSimpleDictionaryFormat = true
+            };
+
             try
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, PhoneBase>), settings);
-                Dictionary<Int64, PhoneBase> phoneBases = serializer.ReadObject(content) as Dictionary<Int64, PhoneBase>;
+                var serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, PhoneBase>), settings);
+                var phoneBases = serializer.ReadObject(content) as Dictionary<Int64, PhoneBase>;
+                if (phoneBases == null) 
+                    return bases;
+
                 foreach (var one in phoneBases)
                 {
-                    PhoneBase oneBase = one.Value;
-                    oneBase.baseId = one.Key;
+                    var oneBase = one.Value;
+                    oneBase.BaseId = one.Key;
                     bases.Add(oneBase);
                 }
 
@@ -66,23 +71,18 @@ namespace Intis.SDK
             }
         }
 
-        public List<Originator> getOriginators()
+        public List<Originator> GetOriginators()
         {
-            NameValueCollection parameters = new NameValueCollection();
-            string content = this.getContent("senders", parameters);
+            var parameters = new NameValueCollection();
+            var content = GetContent("senders", parameters);
 
-            List<Originator> originators = new List<Originator>();
-            Dictionary<string, string> list = new Dictionary<string, string>();
-
+            var originators = new List<Originator>();
             try
             {
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                list = serializer.Deserialize<Dictionary<string, string>>(content);
+                var serializer = new JavaScriptSerializer();
+                var list = serializer.Deserialize<Dictionary<string, string>>(content);
 
-                foreach (var one in list)
-                {
-                    originators.Add(new Originator(one.Key, one.Value));
-                }
+                originators.AddRange(list.Select(one => new Originator(one.Key, one.Value)));
 
                 return originators;
             }
@@ -92,25 +92,34 @@ namespace Intis.SDK
             }
         }
 
-        public List<PhoneBaseItem> getPhoneBaseItems(int baseId, int page = 1)
+        public List<PhoneBaseItem> GetPhoneBaseItems(int baseId, int page = 1)
         {
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("base", baseId.ToString());
-            parameters.Add("page", page.ToString());
+            var parameters = new NameValueCollection()
+            {
+                {"base", baseId.ToString()},
+                {"page", page.ToString()}
+            };
 
-            MemoryStream content = this.getStreamContent("phone", parameters);
-            List<PhoneBaseItem> phoneBaseItem = new List<PhoneBaseItem>();
+            var content = GetStreamContent("phone", parameters);
+            var phoneBaseItem = new List<PhoneBaseItem>();
 
-            DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
-            settings.UseSimpleDictionaryFormat = true;
+            var settings = new DataContractJsonSerializerSettings
+            {
+                UseSimpleDictionaryFormat = true
+            };
+
             try
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, PhoneBaseItem>), settings);
-                Dictionary<Int64, PhoneBaseItem> items = serializer.ReadObject(content) as Dictionary<Int64, PhoneBaseItem>;
+                var serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, PhoneBaseItem>), settings);
+                var items = serializer.ReadObject(content) as Dictionary<Int64, PhoneBaseItem>;
+
+                if (items == null) 
+                    return phoneBaseItem;
+
                 foreach (var one in items)
                 {
-                    PhoneBaseItem item = one.Value;
-                    item.phone = one.Key;
+                    var item = one.Value;
+                    item.Phone = one.Key;
                     phoneBaseItem.Add(item);
                 }
 
@@ -122,26 +131,34 @@ namespace Intis.SDK
             }
         }
 
-        public List<DeliveryStatus> getDeliveryStatus(string[] messageId)
+        public List<DeliveryStatus> GetDeliveryStatus(string[] messageId)
         {
-            NameValueCollection parameters = new NameValueCollection();
-            string messageIdStr = String.Join(",", messageId);
-            parameters.Add("state", messageIdStr);
+            var parameters = new NameValueCollection()
+            {
+                {"state", String.Join(",", messageId)}
+            };
 
-            MemoryStream content = this.getStreamContent("status", parameters);
+            var content = GetStreamContent("status", parameters);
 
-            List<DeliveryStatus> deliveryStatus = new List<DeliveryStatus>();
+            var deliveryStatus = new List<DeliveryStatus>();
 
-            DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
-            settings.UseSimpleDictionaryFormat = true;
+            var settings = new DataContractJsonSerializerSettings
+            {
+                UseSimpleDictionaryFormat = true
+            };
+
             try
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<string, DeliveryStatus>), settings);
-                Dictionary<string, DeliveryStatus> items = serializer.ReadObject(content) as Dictionary<string, DeliveryStatus>;
+                var serializer = new DataContractJsonSerializer(typeof(Dictionary<string, DeliveryStatus>), settings);
+                var items = serializer.ReadObject(content) as Dictionary<string, DeliveryStatus>;
+
+                if (items == null) 
+                    return deliveryStatus;
+
                 foreach (var one in items)
                 {
-                    DeliveryStatus item = one.Value;
-                    item.messageId = one.Key;
+                    var item = one.Value;
+                    item.MessageId = one.Key;
                     deliveryStatus.Add(item);
                 }
 
@@ -153,27 +170,36 @@ namespace Intis.SDK
             }
         }
 
-        public List<MessageSendingResult> sendMessage(Int64[] phone, string originator, string text)
+        public List<MessageSendingResult> SendMessage(Int64[] phone, string originator, string text)
         {
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("phone", String.Join(",", phone.Select(p => p.ToString())));
-            parameters.Add("sender", originator);
-            parameters.Add("text", text);
+            var parameters = new NameValueCollection()
+            {
+                {"phone", String.Join(",", phone.Select(p => p.ToString()))},
+                {"sender", originator},
+                {"text", text}
+            };
 
-            MemoryStream content = this.getStreamContent("send", parameters);
+            var content = GetStreamContent("send", parameters);
 
-            DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
-            settings.UseSimpleDictionaryFormat = true;
+            var settings = new DataContractJsonSerializerSettings
+            {
+                UseSimpleDictionaryFormat = true
+            };
+
             try
             {
-                List<MessageSendingResult> messages = new List<MessageSendingResult>();
+                var messages = new List<MessageSendingResult>();
 
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, MessageSendingResult>[]), settings);
-                Dictionary<Int64, MessageSendingResult>[] items = serializer.ReadObject(content) as Dictionary<Int64, MessageSendingResult>[];
+                var serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, MessageSendingResult>[]), settings);
+                var items = serializer.ReadObject(content) as Dictionary<Int64, MessageSendingResult>[];
+
+                if (items == null) 
+                    return messages;
+
                 foreach (var one in items)
                 {
-                    MessageSendingResult item = one.First().Value;
-                    item.phone = one.First().Key;
+                    var item = one.First().Value;
+                    item.Phone = one.First().Key;
                     messages.Add(item);
                 }
 
@@ -185,27 +211,31 @@ namespace Intis.SDK
             }
         }
 
-        public StopList checkStopList(Int64 phone)
+        public StopList CheckStopList(Int64 phone)
         {
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("phone", phone.ToString());
+            var parameters = new NameValueCollection()
+            {
+                {"phone", phone.ToString()}
+            };
 
-            MemoryStream content = this.getStreamContent("find_on_stop", parameters);
+            var content = GetStreamContent("find_on_stop", parameters);
 
-            DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
-            settings.UseSimpleDictionaryFormat = true;
+            var settings = new DataContractJsonSerializerSettings
+            {
+                UseSimpleDictionaryFormat = true
+            };
+
             try
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, StopList>), settings);
-                Dictionary<Int64, StopList> check = serializer.ReadObject(content) as Dictionary<Int64, StopList>;
+                var serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, StopList>), settings);
+                var check = serializer.ReadObject(content) as Dictionary<Int64, StopList>;
 
-                StopList stopList = null;
-                if (check.Count > 0)
-                {
-                    var one = check.First();
-                    stopList = one.Value;
-                    stopList.id = one.Key;
-                }
+                if (check == null || check.Count <= 0)
+                    return null;
+
+                var one = check.First();
+                var stopList = one.Value;
+                stopList.Id = one.Key;
 
                 return stopList;
             }
@@ -215,101 +245,114 @@ namespace Intis.SDK
             }
         }
 
-		public Int64 addToStopList(Int64 phone)
-		{
-			NameValueCollection parameters = new NameValueCollection();
-			parameters.Add("phone", phone.ToString());
-
-			string content = this.getContent("add2stop", parameters);
-
-			try
-			{
-				JavaScriptSerializer serializer = new JavaScriptSerializer();
-				Dictionary<string, Int64> list = serializer.Deserialize<Dictionary<string, Int64>>(content);
-
-				return list.First().Value;
-			}
-			catch (SerializationException ex)
-			{
-				throw new AddToStopListException(parameters, ex);
-			}
-		}
-
-		public List<Template> getTemplates()
-		{
-			NameValueCollection parameters = new NameValueCollection();
-
-			MemoryStream content = this.getStreamContent("template", parameters);
-
-			DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
-			settings.UseSimpleDictionaryFormat = true;
-			try
-			{
-				DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, Template>), settings);
-				Dictionary<Int64, Template> items = serializer.ReadObject(content) as Dictionary<Int64, Template>;
-
-				List<Template> list = new List<Template>();
-
-				foreach (var one in items)
-				{
-					Template item = one.Value;
-					item.id = one.Key;
-					list.Add(item);
-				}
-
-				return list;
-			}
-			catch (SerializationException ex)
-			{
-				throw new TemplateException(parameters, ex);
-			}
-		}
-
-		public Int64 addTemplate(string title, string template)
-		{
-			NameValueCollection parameters = new NameValueCollection();
-			parameters.Add("name", title);
-			parameters.Add("text", template);
-
-			string content = this.getContent("add_template", parameters);
-
-			try
-			{
-				JavaScriptSerializer serializer = new JavaScriptSerializer();
-				Dictionary<string, Int64> list = serializer.Deserialize<Dictionary<string, Int64>>(content);
-
-				return list.First().Value;
-			}
-			catch (SerializationException ex)
-			{
-				throw new AddTemplateException(parameters, ex);
-			}
-		}
-
-        public List<DailyStats> getDailyStatsByMonth(int year, int month)
+        public Int64 AddToStopList(Int64 phone)
         {
-            DateTime date = new DateTime(year, month, 1, 0, 0, 0);
+            var parameters = new NameValueCollection()
+            {
+                {"phone", phone.ToString()}
+            };
 
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("month", date.ToString("yyyy-MM"));
+            var content = GetContent("add2stop", parameters);
 
-            MemoryStream content = this.getStreamContent("stat_by_month", parameters);
-
-            DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
-            settings.UseSimpleDictionaryFormat = true;
             try
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<string, Dictionary<string, Stats[]>[]>[]), settings);
-                Dictionary<string, Dictionary<string, Stats[]>[]>[] items = serializer.ReadObject(content) as Dictionary<string, Dictionary<string, Stats[]>[]>[];
+                var serializer = new JavaScriptSerializer();
+                var list = serializer.Deserialize<Dictionary<string, Int64>>(content);
 
-                List<DailyStats> list = new List<DailyStats>();
+                return list.First().Value;
+            }
+            catch (SerializationException ex)
+            {
+                throw new AddToStopListException(parameters, ex);
+            }
+        }
+
+        public List<Template> GetTemplates()
+        {
+            var parameters = new NameValueCollection();
+
+            var content = GetStreamContent("template", parameters);
+
+            var settings = new DataContractJsonSerializerSettings
+            {
+                UseSimpleDictionaryFormat = true
+            };
+            
+            try
+            {
+                var serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, Template>), settings);
+                var items = serializer.ReadObject(content) as Dictionary<Int64, Template>;
+
+                var list = new List<Template>();
+
+                if (items == null) 
+                    return list;
 
                 foreach (var one in items)
                 {
-                    var stateDate = one.First();
-                    DailyStats item = new DailyStats(stateDate);
+                    var item = one.Value;
+                    item.Id = one.Key;
                     list.Add(item);
                 }
+
+                return list;
+            }
+            catch (SerializationException ex)
+            {
+                throw new TemplateException(parameters, ex);
+            }
+        }
+
+        public Int64 AddTemplate(string title, string template)
+        {
+            var parameters = new NameValueCollection()
+            {
+                {"name", title},
+                {"text", template}
+            };
+
+            var content = GetContent("add_template", parameters);
+
+            try
+            {
+                var serializer = new JavaScriptSerializer();
+                var list = serializer.Deserialize<Dictionary<string, Int64>>(content);
+
+                return list.First().Value;
+            }
+            catch (SerializationException ex)
+            {
+                throw new AddTemplateException(parameters, ex);
+            }
+        }
+
+        public List<DailyStats> GetDailyStatsByMonth(int year, int month)
+        {
+            var date = new DateTime(year, month, 1, 0, 0, 0);
+
+            var parameters = new NameValueCollection()
+            {
+                {"month", date.ToString("yyyy-MM")}
+            };
+
+            var content = GetStreamContent("stat_by_month", parameters);
+
+            var settings = new DataContractJsonSerializerSettings
+            {
+                UseSimpleDictionaryFormat = true
+            };
+
+            try
+            {
+                var serializer = new DataContractJsonSerializer(typeof(Dictionary<string, Dictionary<string, Stats[]>[]>[]), settings);
+                var items = serializer.ReadObject(content) as Dictionary<string, Dictionary<string, Stats[]>[]>[];
+
+                var list = new List<DailyStats>();
+
+                if (items == null) 
+                    return list;
+
+                list.AddRange(items.Select(one => one.First()).Select(stateDate => new DailyStats(stateDate)));
 
                 return list;
             }
@@ -319,69 +362,81 @@ namespace Intis.SDK
             }
         }
 
-        public List<HLRResponse> makeHLRRequest(Int64[] phone)
+        public List<HlrResponse> MakeHlrRequest(Int64[] phone)
         {
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("phone", String.Join(",", phone.Select(p => p.ToString())));
+            var parameters = new NameValueCollection()
+            {
+                {"phone", String.Join(",", phone.Select(p => p.ToString()))}
+            };
 
-            MemoryStream content = this.getStreamContent("hlr", parameters);
+            var content = GetStreamContent("hlr", parameters);
 
-            DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
-            settings.UseSimpleDictionaryFormat = true;
+            var settings = new DataContractJsonSerializerSettings
+            {
+                UseSimpleDictionaryFormat = true
+            };
+
             try
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, HLRResponse>), settings);
-                List<HLRResponse> items = serializer.ReadObject(content) as List<HLRResponse>;
+                var serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, HlrResponse>), settings);
+                var items = serializer.ReadObject(content) as List<HlrResponse>;
 
                 return items;
             }
             catch (SerializationException ex)
             {
-                throw new HLRResponseException(parameters, ex);
+                throw new HlrResponseException(parameters, ex);
             }
         }
 
-        public List<HLRStatItem> getHlrStats(string from, string to)
+        public List<HlrStatItem> GetHlrStats(string from, string to)
         {
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("from", from);
-            parameters.Add("to", to);
+            var parameters = new NameValueCollection()
+            {
+                {"from", from},
+                {"to", to}
+            };
 
-            MemoryStream content = this.getStreamContent("hlr_stat", parameters);
+            var content = GetStreamContent("hlr_stat", parameters);
 
-            DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
-            settings.UseSimpleDictionaryFormat = true;
+            var settings = new DataContractJsonSerializerSettings
+            {
+                UseSimpleDictionaryFormat = true
+            };
+
             try
             {
-                List<HLRStatItem> list = new List<HLRStatItem>();
+                var list = new List<HlrStatItem>();
 
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, HLRStatItem>), settings);
-                Dictionary<Int64, HLRStatItem> items = serializer.ReadObject(content) as Dictionary<Int64, HLRStatItem>;
+                var serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, HlrStatItem>), settings);
+                var items = serializer.ReadObject(content) as Dictionary<Int64, HlrStatItem>;
 
-                foreach (var one in items)
-                {
-                    list.Add(one.Value);
-                }
+                if (items == null) 
+                    return list;
+
+                list.AddRange(items.Select(one => one.Value));
 
                 return list;
             }
             catch (SerializationException ex)
             {
-                throw new HLRStatItemException(parameters, ex);
+                throw new HlrStatItemException(parameters, ex);
             }
         }
 
-        public Network getNetworkByPhone(Int64 phone)
+        public Network GetNetworkByPhone(Int64 phone)
         {
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("phone", phone.ToString());
+            var parameters = new NameValueCollection()
+            {
+                {"phone", phone.ToString()}
+            };
 
-            MemoryStream content = this.getStreamContent("operator", parameters);
+            var content = GetStreamContent("operator", parameters);
 
             try
             {
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Network));
-                Network network = serializer.ReadObject(content) as Network;
+                var serializer = new DataContractJsonSerializer(typeof(Network));
+                var network = serializer.ReadObject(content) as Network;
 
                 return network;
             }
@@ -391,26 +446,34 @@ namespace Intis.SDK
             }
         }
 
-        public List<IncomingMessage> getIncomingMessages(string date)
+        public List<IncomingMessage> GetIncomingMessages(string date)
         {
-            NameValueCollection parameters = new NameValueCollection();
-            parameters.Add("date", date);
+            var parameters = new NameValueCollection()
+            {
+                {"date", date}
+            };
 
-            MemoryStream content = this.getStreamContent("incoming", parameters);
+            var content = GetStreamContent("incoming", parameters);
 
-            DataContractJsonSerializerSettings settings = new DataContractJsonSerializerSettings();
-            settings.UseSimpleDictionaryFormat = true;
+            var settings = new DataContractJsonSerializerSettings
+            {
+                UseSimpleDictionaryFormat = true
+            };
+
             try
             {
-                List<IncomingMessage> list = new List<IncomingMessage>();
+                var list = new List<IncomingMessage>();
 
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Dictionary<string, IncomingMessage>), settings);
-                Dictionary<string, IncomingMessage> items = serializer.ReadObject(content) as Dictionary<string, IncomingMessage>;
+                var serializer = new DataContractJsonSerializer(typeof(Dictionary<string, IncomingMessage>), settings);
+                var items = serializer.ReadObject(content) as Dictionary<string, IncomingMessage>;
+
+                if (items == null) 
+                    return list;
 
                 foreach (var one in items)
                 {
-                    IncomingMessage message = one.Value;
-                    message.messageId = one.Key;
+                    var message = one.Value;
+                    message.MessageId = one.Key;
                     list.Add(one.Value);
                 }
 

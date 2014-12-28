@@ -72,8 +72,8 @@
     <Compile Include="ExampleBallance.cs" />
     <Compile Include="ExampleDailyStats.cs" />
     <Compile Include="ExampleDeliveryStatus.cs" />
-    <Compile Include="ExampleHLRResponse.cs" />
-    <Compile Include="ExampleHLRStatItem.cs" />
+    <Compile Include="ExampleHlrResponse.cs" />
+    <Compile Include="ExampleHlrStatItem.cs" />
     <Compile Include="ExampleIncomingMessage.cs" />
     <Compile Include="ExampleNetwork.cs" />
     <Compile Include="ExampleOriginator.cs" />

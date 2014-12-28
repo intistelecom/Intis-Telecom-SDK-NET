@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Intis.SDK.Exceptions
 {
-    public class StopListException : SDKSerializationException
+    public class StopListException : SdkSerializationException
     {
          public StopListException(NameValueCollection parameters)
             : base(parameters){}

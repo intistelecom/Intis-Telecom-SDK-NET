@@ -1,10 +1,4 @@
 ﻿using Intis.SDK;
-using Intis.SDK.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Examples
 {
@@ -12,25 +6,25 @@ namespace Examples
 	{
 		static void GetPhoneBaseItem()
 		{
-			string login = "rso";
-			string apiKey = "cfe4fb6f670914b7897cc2783234b7428d6dc826";
-			string apiHost = "http://dev.sms16.ru/get/";
+			const string login = "rso";
+			const string apiKey = "cfe4fb6f670914b7897cc2783234b7428d6dc826";
+			const string apiHost = "http://dev.sms16.ru/get/";
 
-			IntisClient client = new IntisClient(login, apiKey, apiHost);
+			var client = new IntisClient(login, apiKey, apiHost);
 
-            List<PhoneBaseItem> bases = client.getPhoneBaseItems(125480, 1);
-            foreach (PhoneBaseItem one in bases)
+            var bases = client.GetPhoneBaseItems(125480, 2);
+            foreach (var one in bases)
             {
-                one.getPhone();
-                one.getFirstName();
-                one.getMiddleName();
-                one.getLastName();
-                one.getBirthDay();
-                one.getArea();
-                one.getGender();
-                one.getNetwork();
-                one.getNote1();
-                one.getNote2();
+                var phone = one.Phone;
+                var firstName = one.FirstName;
+                var middleName = one.MiddleName;
+                var lastName = one.LastName;
+                var birthDay = one.BirthDay;
+                var area = one.Area;
+                var gender= one.Gender;
+                var network = one.Network;
+                var note1= one.Note1;
+                var note2= one.Note2;
             }
 		}
 	}

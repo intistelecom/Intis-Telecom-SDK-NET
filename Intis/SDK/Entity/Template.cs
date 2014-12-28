@@ -6,52 +6,31 @@ namespace Intis.SDK.Entity
     [DataContract]
     public class Template
     {
-        public Int64 id { get; set; }
-
-		[DataMember(Name = "name")]
-        private string title { get; set; }
-
-		[DataMember(Name = "template")]
-        private string template { get; set; }
-
-		[DataMember(Name = "up_time")]
-        private string createdAt { get; set; }
-
-
         /// <summary>
         /// Template ID
         /// </summary>
         /// <returns>integer</returns>
-        public Int64 getId()
-        {
-            return this.id;
-        }
+        public Int64 Id { get; set; }
 
         /// <summary>
         /// Template name
         /// </summary>
         /// <returns>string</returns>
-        public string getTitle()
-        {
-            return this.title;
-        }
+		[DataMember(Name = "name")]
+        public string Title { get; set; }
 
         /// <summary>
         /// Text of template
         /// </summary>
         /// <returns>string</returns>
-        public string getTemplate()
-        {
-            return this.template;
-        }
+		[DataMember(Name = "template")]
+        public string template { get; set; }
 
         /// <summary>
         /// Time of template creating
         /// </summary>
         /// <returns>string</returns>
-        public string getCreatedAt()
-        {
-            return this.createdAt;
-        }
+		[DataMember(Name = "up_time")]
+        public string CreatedAt { get; set; }
     }
 }

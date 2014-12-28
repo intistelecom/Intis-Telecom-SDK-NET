@@ -1,47 +1,42 @@
 ﻿using Intis.SDK;
-using Intis.SDK.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Examples
 {
-	class ExampleHLRResponse
+	class ExampleHlrResponse
 	{
-		static void GetHLRResponse()
+		static void GetHlrResponse()
 		{
-			string login = "rso";
-			string apiKey = "cfe4fb6f670914b7897cc2783234b7428d6dc826";
-			string apiHost = "http://dev.sms16.ru/get/";
-			IntisClient client = new IntisClient(login, apiKey, apiHost);
+			const string login = "rso";
+			const string apiKey = "cfe4fb6f670914b7897cc2783234b7428d6dc826";
+			const string apiHost = "http://dev.sms16.ru/get/";
+			var client = new IntisClient(login, apiKey, apiHost);
 
-            Int64[] phones = new Int64[] { 79800000000, 79040000000 };
-            List<HLRResponse> HLRResponse = client.makeHLRRequest(phones);
-            foreach (HLRResponse one in HLRResponse)
+            var phones = new[] { 79800000000, 79040000000 };
+            var hlrResponse = client.MakeHlrRequest(phones);
+
+            foreach (var one in hlrResponse)
             {
-                one.getId();
-                one.getIMSI();
-                one.getDestination();
-                one.getMCC();
-                one.getMNC();
-                one.getOriginalCountryCode();
-                one.getOriginalCountryName();
-                one.getOriginalNetworkName();
-                one.getOriginalNetworkPrefix();
-                one.getPortedCountryName();
-                one.getPortedCountryPrefix();
-                one.getPortedNetworkName();
-                one.getPortedNetworkPrefix();
-                one.getPricePerMessage();
-                one.getRoamingCountryName();
-                one.getRoamingCountryPrefix();
-                one.getRoamingNetworkName();
-                one.getRoamingNetworkPrefix();
-                one.getStatus();
-                one.isPorted();
-                one.isInRoaming();
+                var id = one.Id;
+                var imsi = one.Imsi;
+                var destination = one.Destination;
+                var mcc = one.Mcc;
+                var mnc = one.Mnc;
+                var originalCountryCode = one.OriginalCountryCode;
+                var originalCountryName = one.OriginalCountryName;
+                var originalNetworkName = one.OriginalNetworkName;
+                var originalNetworkPrefix = one.OriginalNetworkPrefix;
+                var portedCountryName = one.PortedCountryName;
+                var portedCountryPrefix = one.PortedCountryPrefix;
+                var portedNetworkName = one.PortedNetworkName;
+                var portedNetworkPrefix = one.PortedNetworkPrefix;
+                var pricePerMessage = one.PricePerMessage;
+                var roamingCountryName = one.RoamingCountryName;
+                var roamingCountryPrefix = one.RoamingCountryPrefix;
+                var roamingNetworkName = one.RoamingNetworkName;
+                var roamingNetworkPrefix = one.RoamingNetworkPrefix;
+                var status = one.Status;
+                var isPorted = one.IsPorted;
+                var isInRoaming = one.IsInRoaming;
             }
 		}
 	}

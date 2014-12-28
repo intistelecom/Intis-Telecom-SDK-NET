@@ -4,255 +4,164 @@ using System.Runtime.Serialization;
 namespace Intis.SDK.Entity
 {
     [DataContract]
-	public class HLRResponse
+	public class HlrResponse
 	{
-        [DataMember(Name = "id")]
-		private string id { get; set; }
-
-        [DataMember(Name = "destination")]
-		private Int64 destination { get; set; }
-
-        [DataMember(Name = "stat")]
-		private string status { get; set; }
-
-        [DataMember(Name = "IMSI")]
-		private string IMSI { get; set; }
-
-        [DataMember(Name = "mccmnc")]
-        private string mccmnc { get; set; }
-
-        [DataMember(Name = "ocn")]
-		private string originalCountryName { get; set; }
-
-        [DataMember(Name = "ocp")]
-		private string originalCountryCode { get; set; }
-
-        [DataMember(Name = "orn")]
-		private string originalNetworkName { get; set; }
-
-        [DataMember(Name = "onp")]
-		private string originalNetworkPrefix { get; set; }
-
-        [DataMember(Name = "rcn")]
-		private string roamingCountryName { get; set; }
-
-        [DataMember(Name = "rcp")]
-		private string roamingCountryPrefix { get; set; }
-
-        [DataMember(Name = "ron")]
-		private string roamingNetworkName { get; set; }
-
-        [DataMember(Name = "rnp")]
-		private string roamingNetworkPrefix { get; set; }
-
-        [DataMember(Name = "pcn")]
-		private string portedCountryName { get; set; }
-
-        [DataMember(Name = "pcp")]
-		private string portedCountryPrefix { get; set; }
-
-        [DataMember(Name = "pon")]
-		private string portedNetworkName { get; set; }
-
-        [DataMember(Name = "pnp")]
-		private string portedNetworkPrefix { get; set; }
-
-        [DataMember(Name = "ppm")]
-		private float pricePerMessage { get; set; }
-
-        [DataMember(Name = "is_ported")]
-		private bool ported { get; set; }
-
-        [DataMember(Name = "is_roaming")]
-		private bool inRoaming { get; set; }
-
         /// <summary>
         /// Number ID
         /// </summary>
         /// <returns>string</returns>
-        public string getId()
-        {
-            return this.id;
-        }
+        [DataMember(Name = "id")]
+        public string Id { get; set; }
 
         /// <summary>
         /// Addressee
         /// </summary>
         /// <returns>integer</returns>
-        public Int64 getDestination()
-        {
-            return this.destination;
-        }
+        [DataMember(Name = "destination")]
+        public Int64 Destination { get; set; }
+
+        [DataMember(Name = "stat")]
+        private string StatusString { get; set; }
 
         /// <summary>
         /// Status of subscriber
         /// </summary>
         /// <returns>string</returns>
-        public int getStatus()
-        {
-            return HLRResponseState.parse(this.status);
+        public int Status {
+            get { return HlrResponseState.Parse(StatusString); } 
         }
 
         /// <summary>
         /// IMSI of subscriber
         /// </summary>
         /// <returns>string</returns>
-        public string getIMSI()
-        {
-            return this.IMSI;
-        }
+        [DataMember(Name = "IMSI")]
+        public string Imsi { get; set; }
+
+        [DataMember(Name = "mccmnc")]
+        private string Mccmnc { get; set; }
 
         /// <summary>
         /// MCC of subscriber
         /// </summary>
         /// <returns>string</returns>
-        public string getMCC()
+        public string Mcc
         {
-            return mccmnc.Substring(0, 3);
+            get { return Mccmnc.Substring(0, 3); }
         }
 
         /// <summary>
         /// MNC of subscriber
         /// </summary>
         /// <returns>string</returns>
-        public string getMNC()
+        public string Mnc
         {
-            return mccmnc.Substring(3);
-        }
-
-        /// <summary>
-        /// The original name of the subscriber's country
-        /// </summary>
-        /// <returns>string</returns>
-        public string getOriginalCountryName()
-        {
-            return this.originalCountryName;
+            get { return Mccmnc.Substring(3); }
         }
 
         /// <summary>
         /// The original code of the subscriber's country
         /// </summary>
         /// <returns>string</returns>
-        public string getOriginalCountryCode()
-        {
-            return this.originalCountryCode;
-        }
+        [DataMember(Name = "ocn")]
+        public string OriginalCountryName { get; set; }
+
+        /// <summary>
+        /// The original code of the subscriber's country
+        /// </summary>
+        /// <returns>string</returns>
+        [DataMember(Name = "ocp")]
+        public string OriginalCountryCode { get; set; }
 
         /// <summary>
         /// The original name of the subscriber's operator
         /// </summary>
         /// <returns>string</returns>
-        public string getOriginalNetworkName()
-        {
-            return this.originalNetworkName;
-        }
+        [DataMember(Name = "orn")]
+		public string OriginalNetworkName { get; set; }
 
         /// <summary>
         /// The original prefix of the subscriber's operator
         /// </summary>
         /// <returns>string</returns>
-        public string getOriginalNetworkPrefix()
-        {
-            return this.originalNetworkPrefix;
-        }
+        [DataMember(Name = "onp")]
+		public string OriginalNetworkPrefix { get; set; }
 
         /// <summary>
         /// Name of country in the subscriber's roaming
         /// </summary>
         /// <returns>string</returns>
-        public string getRoamingCountryName()
-        {
-            return this.roamingCountryName;
-        }
+        [DataMember(Name = "rcn")]
+		public string RoamingCountryName { get; set; }
 
         /// <summary>
         /// Prefix of country in the subscriber's roaming
         /// </summary>
         /// <returns>string</returns>
-        public string getRoamingCountryPrefix()
-        {
-            return this.roamingCountryPrefix;
-        }
+        [DataMember(Name = "rcp")]
+		public string RoamingCountryPrefix { get; set; }
 
         /// <summary>
         /// Operator in the subscriber's roaming
         /// </summary>
         /// <returns>string</returns>
-        public string getRoamingNetworkName()
-        {
-            return this.roamingNetworkName;
-        }
+        [DataMember(Name = "ron")]
+		public string RoamingNetworkName { get; set; }
 
         /// <summary>
         /// Prefix of operator in the subscriber's roaming
         /// </summary>
         /// <returns>string</returns>
-        public string getRoamingNetworkPrefix()
-        {
-            return this.roamingNetworkPrefix;
-        }
+        [DataMember(Name = "rnp")]
+		public string RoamingNetworkPrefix { get; set; }
 
         /// <summary>
         /// Name of country if the phone number of the subscriber is ported
         /// </summary>
         /// <returns>string</returns>
-        public string getPortedCountryName()
-        {
-            return this.portedCountryName;
-        }
+        [DataMember(Name = "pcn")]
+		public string PortedCountryName { get; set; }
 
         /// <summary>
         /// Prefix of country if the phone number of the subscriber is ported
         /// </summary>
         /// <returns>string</returns>
-        public string getPortedCountryPrefix()
-        {
-            return this.portedCountryPrefix;
-        }
+        [DataMember(Name = "pcp")]
+		public string PortedCountryPrefix { get; set; }
 
         /// <summary>
         /// Name of operator if the phone number of the subscriber is ported
         /// </summary>
         /// <returns>string</returns>
-        public string getPortedNetworkName()
-        {
-            return this.portedNetworkName;
-        }
+        [DataMember(Name = "pon")]
+		public string PortedNetworkName { get; set; }
 
         /// <summary>
         /// Prefix of operator if the phone number of the subscriber is ported
         /// </summary>
         /// <returns>string</returns>
-        public string getPortedNetworkPrefix()
-        {
-            return this.portedNetworkPrefix;
-        }
+        [DataMember(Name = "pnp")]
+        public string PortedNetworkPrefix { get; set; }
 
         /// <summary>
         /// Price for message
         /// </summary>
         /// <returns>float</returns>
-        public float getPricePerMessage()
-        {
-            return this.pricePerMessage;
-        }
+        [DataMember(Name = "ppm")]
+		public float PricePerMessage { get; set; }
 
         /// <summary>
         /// Key that is responsible for identification of a ported number
         /// </summary>
         /// <returns>integer</returns>
-        public bool isPorted()
-        {
-            return this.ported;
-        }
+        [DataMember(Name = "is_ported")]
+		public bool IsPorted { get; set; }
 
         /// <summary>
         /// Key that is responsible for identification a subscriber in roaming
         /// </summary>
         /// <returns>string</returns>
-        public bool isInRoaming()
-        {
-            return this.inRoaming;
-        }
+        [DataMember(Name = "is_roaming")]
+		public bool IsInRoaming { get; set; }
 	}
 }

@@ -1,10 +1,4 @@
 ﻿using Intis.SDK;
-using Intis.SDK.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Examples
 {
@@ -12,22 +6,23 @@ namespace Examples
 	{
 		static void GetDailyStats()
 		{
-			string login = "rso";
-			string apiKey = "cfe4fb6f670914b7897cc2783234b7428d6dc826";
-			string apiHost = "http://dev.sms16.ru/get/";
-			IntisClient client = new IntisClient(login, apiKey, apiHost);
+			const string login = "rso";
+			const string apiKey = "cfe4fb6f670914b7897cc2783234b7428d6dc826";
+			const string apiHost = "http://dev.sms16.ru/get/";
+			var client = new IntisClient(login, apiKey, apiHost);
 
-            List<DailyStats> stats = client.getDailyStatsByMonth(2014, 10);
-            foreach (DailyStats one in stats)
+            var stats = client.GetDailyStatsByMonth(2014, 10);
+
+            foreach (var one in stats)
             {
-                one.getDay();
-                var s = one.getStats();
-                foreach (Stats i in s)
+                var day = one.Day;
+                var s = one.Stats;
+                foreach (var i in s)
                 {
-                    var t = i.getCost();
-                    i.getCount();
-                    i.getCurrency();
-                    i.getState();
+                    var cost = i.Cost;
+                    var count = i.Count;
+                    var currency = i.Currency;
+                    var state = i.State;
                 }
             }
 		}

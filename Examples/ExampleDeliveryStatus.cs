@@ -1,6 +1,4 @@
 ﻿using Intis.SDK;
-using Intis.SDK.Entity;
-using System.Collections.Generic;
 
 namespace Examples
 {
@@ -8,20 +6,20 @@ namespace Examples
 	{
 		static void GetDeliveryStatus()
 		{
-			string login = "rso";
-			string apiKey = "cfe4fb6f670914b7897cc2783234b7428d6dc826";
-			string apiHost = "http://dev.sms16.ru/get/";
+			const string login = "rso";
+			const string apiKey = "cfe4fb6f670914b7897cc2783234b7428d6dc826";
+			const string apiHost = "http://dev.sms16.ru/get/";
 
-			IntisClient client = new IntisClient(login, apiKey, apiHost);
+			var client = new IntisClient(login, apiKey, apiHost);
 
-			string[] messageId = new string[1] { "4196226820248326060001" };
+			var messageId = new [] { "4196226820248326060001" };
 
-            List<DeliveryStatus> status = client.getDeliveryStatus(messageId);
-            foreach (DeliveryStatus one in status)
+            var status = client.GetDeliveryStatus(messageId);
+            foreach (var one in status)
             {
-                one.getMessageId();
-                one.getMessageStatus();
-                one.getCreatedAt();
+                var meassageId = one.MessageId;
+                var messageStatue = one.MessageStatus;
+                var createdAt = one.CreatedAt;
             }
 		}
 	}

@@ -5,31 +5,26 @@ namespace Intis.SDK.Entity
     [DataContract]
     public class Originator
     {
-        private string originator {get; set;}
-        private string state { get; set; }
-
-        public Originator(string originator, string state)
-        {
-            this.originator = originator;
-            this.state = state;
-        }
-
         /// <summary>
         /// Sender name
         /// </summary>
         /// <returns>string</returns>
-        public string getOriginator()
-        {
-            return this.originator;
-        }
+        public string Name {get; set;}
+
+        private string StateText { get; set; }
 
         /// <summary>
         /// Sender status
         /// </summary>
         /// <returns>integer</returns>
-        public int? getState()
+        public int? State {
+            get { return OriginatorState.Parse(StateText); }
+        }
+
+        public Originator(string originator, string state)
         {
-            return OriginatorState.parse(this.state);
+            Name = originator;
+            StateText = state;
         }
     }
 }

@@ -1,29 +1,28 @@
 ﻿
 namespace Intis.SDK.Entity
 {
-    public class HLRResponseState
+    public class HlrResponseState
     {
         /// <summary>
         /// Constant of the successful status
         /// </summary>
         /// <returns>integer</returns>
-        const int SUCCESS = 1;
+        const int Success = 1;
 
         /// <summary>
         /// Constant of the status error
         /// </summary>
         /// <returns>integer</returns>
-        const int FAILED = 2;
+        const int Failed = 2;
 
         /// <summary>
         /// Analysis of the string of status by HLR request
         /// </summary>
-        /// <param name="string">String representation of status</param>
+        /// <param name="str">String representation of status</param>
         /// <returns>integer</returns>
-        public static int parse(string str){
-            if(str.ToLower() == "delivrd")
-                return SUCCESS;
-            return FAILED;
+        public static int Parse(string str)
+        {
+            return str.ToLower() == "delivrd" ? Success : Failed;
         }
     }
 }

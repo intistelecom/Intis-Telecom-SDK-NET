@@ -6,123 +6,78 @@ namespace Intis.SDK.Entity
     [DataContract]
     public class PhoneBaseItem
     {
-		public Int64 phone { get; set; }
-
-        [DataMember(Name = "name")]
-        private string firstName { get; set; }
-
-        [DataMember(Name = "middle_name")]
-        private string middleName { get; set; }
-
-        [DataMember(Name = "last_name")]
-        private string lastName { get; set; }
-
-        [DataMember(Name = "date_birth")]
-        private string birthDay { get; set; }
-
-        [DataMember(Name = "male")]
-        private string gender { get; set; }
-
-        [DataMember(Name = "region")]
-        private string area { get; set; }
-
-        [DataMember(Name = "operator")]
-        private string network { get; set; }
-
-        [DataMember(Name = "note1")]
-        private string note1 { get; set; }
-
-        [DataMember(Name = "note2")]
-        private string note2 { get; set; }
-
         /// <summary>
         /// Phone number of subscriber
         /// </summary>
         /// <returns>integer</returns>
-        public Int64 getPhone()
-        {
-            return this.phone;
-        }
+		public Int64 Phone { get; set; }
 
         /// <summary>
         /// Subscriber first name
         /// </summary>
         /// <returns>string</returns>
-        public string getFirstName()
-        {
-            return this.firstName;
-        }
+        [DataMember(Name = "name")]
+        public string FirstName { get; set; }
 
         /// <summary>
         /// Subscriber middle name
         /// </summary>
         /// <returns>string</returns>
-        public string getMiddleName()
-        {
-            return this.middleName;
-        }
+        [DataMember(Name = "middle_name")]
+        public string MiddleName { get; set; }
 
         /// <summary>
         /// Subscriber last name
         /// </summary>
         /// <returns>string</returns>
-        public string getLastName()
-        {
-            return this.lastName;
-        }
+        [DataMember(Name = "last_name")]
+        public string LastName { get; set; }
 
         /// <summary>
         /// Subscriber birth date
         /// </summary>
         /// <returns>string</returns>
-        public string getBirthDay()
-        {
-            return this.birthDay;
-        }
+        [DataMember(Name = "date_birth")]
+        public string BirthDay { get; set; }
+
+        [DataMember(Name = "male")]
+        private string GenderString { get; set; }
 
         /// <summary>
         /// Gender of subscriber
         /// </summary>
         /// <returns>integer</returns>
-        public int getGender()
+        public int Gender
         {
-            return Gender.parse(this.gender);
+            get { return Entity.Gender.Parse(GenderString); }
         }
 
         /// <summary>
         /// Region of subscriber
         /// </summary>
         /// <returns>string</returns>
-        public string getArea()
-        {
-            return this.area;
-        }
+        [DataMember(Name = "region")]
+        public string Area { get; set; }
 
         /// <summary>
         /// Operator of subscriber
         /// </summary>
         /// <returns>string</returns>
-        public string getNetwork()
-        {
-            return this.network;
-        }
+        [DataMember(Name = "operator")]
+        public string Network { get; set; }
 
         /// <summary>
         /// Note 1
         /// </summary>
         /// <returns>string</returns>
-        public string getNote1()
-        {
-            return this.note1;
-        }
+        [DataMember(Name = "note1")]
+        public string Note1 { get; set; }
 
         /// <summary>
         /// Note 2
         /// </summary>
         /// <returns>string</returns>
-        public string getNote2()
-        {
-            return this.note2;
-        }
+        [DataMember(Name = "note2")]
+        public string Note2 { get; set; }
     }
 }

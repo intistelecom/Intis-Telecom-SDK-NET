@@ -7,36 +7,37 @@ namespace Intis.SDK.Entity
         /// Constant for approved sender
         /// </summary>
         /// <returns>integer</returns>
-        const int COMPLETED = 1;
+        const int Completed = 1;
 
         /// <summary>
         /// Constant for sender in moderation queue
         /// </summary>
         /// <returns>integer</returns>
-        const int MODERATION = 2;
+        const int Moderation = 2;
 
         /// <summary>
         /// Constant for rejected sender
         /// </summary>
         /// <returns>integer</returns>
-        const int REJECTED = 3;
+        const int Rejected = 3;
 
         /// <summary>
         /// Analysis of the string of sender status
         /// </summary>
-        /// <param name="string">String presentation of sender status</param>
+        /// <param name="str">String presentation of sender status</param>
         /// <returns>integer</returns>
-        public static int? parse(string str){
-              if (str == "completed"){
-                    return COMPLETED;
-              }
-              else if (str == "order"){
-                    return MODERATION;
-              }
-              else if (str == "rejected"){
-                    return REJECTED;
-              }
-              return null;
+        public static int? Parse(string str)
+        {
+            switch (str)
+            {
+                case "completed":
+                    return Completed;
+                case "order":
+                    return Moderation;
+                case "rejected":
+                    return Rejected;
+            }
+            return null;
         }
     }
 }

@@ -1,6 +1,4 @@
 ﻿using Intis.SDK;
-using Intis.SDK.Entity;
-using System.Collections.Generic;
 
 namespace Examples
 {
@@ -8,26 +6,26 @@ namespace Examples
 	{
 		static void GetPhoneBase()
 		{
-			string login = "rso";
-			string apiKey = "cfe4fb6f670914b7897cc2783234b7428d6dc826";
-			string apiHost = "http://dev.sms16.ru/get/";
+			const string login = "rso";
+			const string apiKey = "cfe4fb6f670914b7897cc2783234b7428d6dc826";
+			const string apiHost = "http://dev.sms16.ru/get/";
 
-			IntisClient client = new IntisClient(login, apiKey, apiHost);
+			var client = new IntisClient(login, apiKey, apiHost);
 
-            List<PhoneBase> balance = client.getPhoneBases();
-            foreach (PhoneBase one in balance)
+            var balance = client.GetPhoneBases();
+            foreach (var one in balance)
             {
-                one.getBaseId();
-                one.getTitle();
-                one.getCount();
-                one.getPages();
-                BirthdayGreetingSettings birthday = one.getBirthdayGreetingSettings();
-                birthday.getEnebled();
-                birthday.getOriginator();
-                birthday.getDaysBefore();
-                birthday.getTimeToSend();
-                birthday.getUselocalTime();
-                birthday.getTemplate();
+                var baseId = one.BaseId;
+                var title = one.Title;
+                var count = one.Count;
+                var pages = one.Pages;
+                var birthday = one.BirthdayGreetingSettings;
+                var enabled = birthday.Enabled;
+                var originator = birthday.Originator;
+                var daysBefore = birthday.DaysBefore;
+                var timeToSend = birthday.TimeToSend;
+                var useLocalTime = birthday.UseLocalTime;
+                var template = birthday.Template;
             }
 		}
 	}

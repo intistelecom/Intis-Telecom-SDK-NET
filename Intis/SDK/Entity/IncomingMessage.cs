@@ -5,63 +5,38 @@ namespace Intis.SDK.Entity
     [DataContract]
     public class IncomingMessage
     {
-		public string messageId { get; set; }
-
-        [DataMember(Name = "date")]
-        private string receivedAt { get; set; }
-
-        [DataMember(Name = "sender")]
-        private string originator { get; set; }
-
-        [DataMember(Name = "prefix")]
-        private string prefix { get; set; }
-
-        [DataMember(Name = "text")]
-        private string text { get; set; }
-
         /// <summary>
         /// Message ID
         /// </summary>
         /// <returns>string</returns>
-        public string getMessageId()
-        {
-            return this.messageId;
-        }
+		public string MessageId { get; set; }
 
         /// <summary>
         /// Date of message receipt
         /// </summary>
         /// <returns>string</returns>
-        public string getReceivedAt()
-        {
-            return this.receivedAt;
-        }
+        [DataMember(Name = "date")]
+        public string ReceivedAt { get; set; }
 
         /// <summary>
         /// Sender name
         /// </summary>
         /// <returns>string</returns>
-        public string getOriginator()
-        {
-            return this.originator;
-        }
+        [DataMember(Name = "sender")]
+        public string Originator { get; set; }
 
         /// <summary>
         /// Prefix of incoming message
         /// </summary>
         /// <returns>string</returns>
-        public string getPrefix()
-        {
-            return this.prefix;
-        }
+        [DataMember(Name = "prefix")]
+        public string Prefix { get; set; }
 
         /// <summary>
         /// SMS text
         /// </summary>
         /// <returns>string</returns>
-        public string getText()
-        {
-            return this.text;
-        }
+        [DataMember(Name = "text")]
+        public string Text { get; set; }
     }
 }

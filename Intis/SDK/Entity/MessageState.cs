@@ -7,79 +7,79 @@ namespace Intis.SDK.Entity
         /// Constant for scheduled message
         /// </summary>
         /// <returns>integer</returns>
-        const int SCHEDULED = 0;
+        const int Scheduled = 0;
 
         /// <summary>
         /// Constant for message with ENROUT status
         /// </summary>
         /// <returns>integer</returns>
-        const int ENROUTE = 1;
+        const int Enroute = 1;
 
         /// <summary>
         /// Constant for delivered message
         /// </summary>
         /// <returns>integer</returns>
-        const int DELIVERED = 2;
+        const int Delivered = 2;
 
         /// <summary>
         /// Constant for expired message
         /// </summary>
         /// <returns>integer</returns>
-        const int EXPIRED = 3;
+        const int Expired = 3;
 
         /// <summary>
         /// Constant for deleted message
         /// </summary>
         /// <returns>integer</returns>
-        const int DELETED = 4;
+        const int Deleted = 4;
 
         /// <summary>
         /// Constant for undelivered message
         /// </summary>
         /// <returns>integer</returns>
-        const int UNDELIVERABLE = 5;
+        const int Undeliverable = 5;
 
         /// <summary>
         /// Constant for sent message
         /// </summary>
         /// <returns>integer</returns>
-        const int ACCEPTED = 6;
+        const int Accepted = 6;
 
         /// <summary>
         /// Constant for unknown message
         /// </summary>
         /// <returns>integer</returns>
-        const int UNKNOWN = 7;
+        const int Unknown = 7;
 
         /// <summary>
         /// Constant for rejected message
         /// </summary>
         /// <returns>integer</returns>
-        const int REJECTED = 8;
+        const int Rejected = 8;
 
         /// <summary>
         /// Constant for missed message
         /// </summary>
         /// <returns>integer</returns>
-        const int SKIPPED = 9;
+        const int Skipped = 9;
 
         /// <summary>
         /// Analysis of the string of message status
         /// </summary>
-        /// <param name="string">String presentation of message status</param>
+        /// <param name="state">String presentation of message status</param>
         /// <returns>integer</returns>
-        public static int? parse(string state)
+        public static int? Parse(string state)
         {
             switch (state)
             {
                 case "deliver":
-                    return DELIVERED;
+                    return Delivered;
                 case "expired":
-                    return EXPIRED;
+                    return Expired;
                 case "not_deliver":
-                    return UNDELIVERABLE;
+                    return Undeliverable;
                 case "partly_deliver":
-                    return ACCEPTED;
+                    return Accepted;
                 default:
                     return null;
             }

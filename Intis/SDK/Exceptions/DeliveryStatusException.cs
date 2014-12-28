@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
+﻿using System.Collections.Specialized;
 using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Intis.SDK.Exceptions
 {
-    public class DeliveryStatusException : SDKSerializationException
+    public class DeliveryStatusException : SdkSerializationException
     {
         public DeliveryStatusException(NameValueCollection parameters)
             : base(parameters){}

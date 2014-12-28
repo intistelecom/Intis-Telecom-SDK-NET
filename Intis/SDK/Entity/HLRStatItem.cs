@@ -3,55 +3,34 @@
 namespace Intis.SDK.Entity
 {
     [DataContract]
-    public class HLRStatItem : HLRResponse
+    public class HlrStatItem : HlrResponse
     {
-        [DataMember(Name = "message_id")]
-		private string messageId { get; set; }
-
-        [DataMember(Name = "total_price")]
-        private float totalPrice { get; set; }
-
-        [DataMember(Name = "request_id")]
-		private string requestId { get; set; }
-
-        [DataMember(Name = "request_time")]
-        private string requestTime { get; set; }
-
-
         /// <summary>
         /// Message ID
         /// </summary>
         /// <returns>string</returns>
-        public string getMessageId()
-        {
-            return this.messageId;
-        }
+        [DataMember(Name = "message_id")]
+		public string MessageId { get; set; }
 
         /// <summary>
         /// Final price
         /// </summary>
         /// <returns>float</returns>
-        public float getTotalPrice()
-        {
-            return this.totalPrice;
-        }
+        [DataMember(Name = "total_price")]
+        public float TotalPrice { get; set; }
 
         /// <summary>
         /// Request ID
         /// </summary>
         /// <returns>string</returns>
-        public string getRequestId()
-        {
-            return this.requestId;
-        }
+        [DataMember(Name = "request_id")]
+		public string RequestId { get; set; }
 
         /// <summary>
         /// Time of HLR request
         /// </summary>
         /// <returns>string</returns>
-        public string getRequestTime()
-        {
-            return this.requestTime;
-        }
+        [DataMember(Name = "request_time")]
+        public string RequestTime { get; set; }
     }
 }

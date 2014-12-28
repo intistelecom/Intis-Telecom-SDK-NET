@@ -1,10 +1,4 @@
 ﻿using Intis.SDK;
-using Intis.SDK.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Examples
 {
@@ -12,23 +6,23 @@ namespace Examples
 	{
 		static void SendMessage()
 		{
-			string login = "rso";
-			string apiKey = "cfe4fb6f670914b7897cc2783234b7428d6dc826";
-			string apiHost = "http://dev.sms16.ru/get/";
+			const string login = "rso";
+			const string apiKey = "cfe4fb6f670914b7897cc2783234b7428d6dc826";
+			const string apiHost = "http://dev.sms16.ru/get/";
 
-			IntisClient client = new IntisClient(login, apiKey, apiHost);
+			var client = new IntisClient(login, apiKey, apiHost);
 
 
-            Int64[] phones = new Int64[2] { 79000000000, 79000000001 };
-            List<MessageSendingResult> status = client.sendMessage(phones, "smstest", "test");
-            foreach (MessageSendingResult one in status)
+            var phones = new [] { 79000000000, 79000000001 };
+            var status = client.SendMessage(phones, "smstest", "test");
+            foreach (var one in status)
             {
-                one.getPhone();
-                one.getMessageId();
-                one.getMessagesCount();
-                one.getCost();
-                one.getCurrency();
-                one.getError();
+                var phone = one.Phone;
+                var messageId = one.MessageId;
+                var messagesCount = one.MessagesCount;
+                var cost = one.Cost;
+                var currency= one.Currency;
+                var error = one.Error;
             }
 		}
 	}

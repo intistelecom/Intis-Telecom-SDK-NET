@@ -5,51 +5,36 @@ namespace Intis.SDK.Entity
     [DataContract]
     public class Stats
     {
-        public string state {get; set;}
-
-        [DataMember(Name = "cost")]
-        private float cost { get; set; }
-
-        [DataMember(Name = "currency")]
-        private string currency { get; set; }
-
-        [DataMember(Name = "parts")]
-        private int count { get; set; }
+        public string StateText { get; set; }
 
         /// <summary>
         /// Status of message
         /// </summary>
         /// <returns>integer</returns>
-        public int? getState()
+        public int? State
         {
-            return MessageState.parse(this.state);
+            get { return MessageState.Parse(StateText); }
         }
 
         /// <summary>
         /// Price for message
         /// </summary>
         /// <returns>float</returns>
-        public float getCost()
-        {
-            return this.cost;
-        }
+        [DataMember(Name = "cost")]
+        public float Cost { get; set; }
 
         /// <summary>
         /// Name of currency
         /// </summary>
         /// <returns>string</returns>
-        public string getCurrency()
-        {
-            return this.currency;
-        }
+        [DataMember(Name = "currency")]
+        public string Currency { get; set; }
 
         /// <summary>
         /// Number of message parts
         /// </summary>
         /// <returns>integer</returns>
-        public int getCount()
-        {
-            return this.count;
-        }
+        [DataMember(Name = "parts")]
+        public int Count { get; set; }
     }
 }

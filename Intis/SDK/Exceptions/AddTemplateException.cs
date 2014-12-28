@@ -3,7 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Intis.SDK.Exceptions
 {
-    public class AddTemplateException : SDKSerializationException
+    public class AddTemplateException : SdkSerializationException
     {
         public AddTemplateException(NameValueCollection parameters)
             : base(parameters){}

@@ -6,14 +6,23 @@ namespace Intis.SDK.Entity
     [DataContract]
     public class DailyStats
     {
-        private string day{get; set;}
-        private List<Stats> stats{get; set;}
+        /// <summary>
+        /// day for statistics output
+        /// </summary>
+        /// <returns>string</returns>
+        public string Day { get; set; }
+
+        /// <summary>
+        /// variable for storing statistics
+        /// </summary>
+        /// <returns>List Stats</returns>
+        public List<Stats> Stats { get; set; }
 
         public DailyStats(KeyValuePair<string, Dictionary<string, Stats[]>[]> obj)
         {
-            day = obj.Key;
+            Day = obj.Key;
 
-            List<Stats> stats = new List<Stats>();
+            var stats = new List<Stats>();
             foreach (var one in obj.Value)
             {
                 foreach (var item in one)
@@ -21,30 +30,12 @@ namespace Intis.SDK.Entity
                     var st = item.Key;
                     foreach (var stObj in item.Value)
                     {
-                        stObj.state = st;
+                        stObj.StateText = st;
                         stats.Add(stObj);
                     }
                 }   
             }
-            this.stats = stats;
-        }
-
-        /// <summary>
-        /// day for statistics output
-        /// </summary>
-        /// <returns>string</returns>
-        public string getDay()
-        {
-            return this.day;
-        }
-
-        /// <summary>
-        /// variable for storing statistics
-        /// </summary>
-        /// <returns>List Stats</returns>
-        public List<Stats> getStats()
-        {
-            return this.stats;
+            Stats = stats;
         }
     }
 }

@@ -5,11 +5,11 @@ using System.Runtime.Serialization;
 namespace Intis.SDK.Exceptions
 {
 	[Serializable]
-	public class SDKException : Exception
+	public class SdkException : Exception
 	{
         public int Code { get; private set; }
 	    private static string GetMessage(int code){
-			Dictionary<int, string> messages = new Dictionary<int, string>()
+			var messages = new Dictionary<int, string>
 			{
 				{0, "Service is disabled"},
 				{1, "Signature is not specified"},
@@ -42,32 +42,31 @@ namespace Intis.SDK.Exceptions
 				{28, "Initial date is not specified"},
 				{29, "Final date is not specified"}
 			};
-			string message = "";
+			string message;
 			messages.TryGetValue(code, out message);
 
 			return message;
 		}
 
-		public SDKException()
-			: base() { }
+		public SdkException() { }
 
-		public SDKException(int code)
+		public SdkException(int code)
 			: base(GetMessage(code)) {
                 Code = code;
         }
 
-		public SDKException(string format, params object[] args)
+		public SdkException(string format, params object[] args)
 			: base(string.Format(format, args)) { }
 
-		public SDKException(int code, Exception innerException)
+		public SdkException(int code, Exception innerException)
 			: base(GetMessage(code), innerException) {
                 Code = code;
             }
 
-		public SDKException(string format, Exception innerException, params object[] args)
+		public SdkException(string format, Exception innerException, params object[] args)
 			: base(string.Format(format, args), innerException) { }
 
-		protected SDKException(SerializationInfo info, StreamingContext context)
+		protected SdkException(SerializationInfo info, StreamingContext context)
 			: base(info, context) { }
 	}
 }
