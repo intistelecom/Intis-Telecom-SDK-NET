@@ -1,4 +1,5 @@
 ﻿using Intis.SDK;
+using Intis.SDK.Entity;
 
 namespace Examples
 {
@@ -13,16 +14,26 @@ namespace Examples
 			var client = new IntisClient(login, apiKey, apiHost);
 
 
-            var phones = new [] { 79000000000, 79000000001 };
+            var phones = new [] { 79802503672};
             var status = client.SendMessage(phones, "smstest", "test");
             foreach (var one in status)
             {
-                var phone = one.Phone;
-                var messageId = one.MessageId;
-                var messagesCount = one.MessagesCount;
-                var cost = one.Cost;
-                var currency= one.Currency;
-                var error = one.Error;
+				if (one.IsOk)
+				{
+					//var result = (MessageSendingSuccess) one;
+					//var phone = one.Phone;
+					//var messageId = one.MessageId;
+					//var messagesCount = one.MessagesCount;
+					//var cost = one.Cost;
+					//var currency = one.Currency;
+				}
+				else
+				{
+					//var result = (MessageSendingError)one;
+					//var phone = one.Phone;
+					//var errorCode = one.Code;
+					//var errorMessage = one.Message;
+				}
             }
 		}
 	}

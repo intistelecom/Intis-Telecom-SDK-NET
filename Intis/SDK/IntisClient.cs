@@ -186,21 +186,39 @@ namespace Intis.SDK
                 UseSimpleDictionaryFormat = true
             };
 
+			var messages = new List<MessageSendingResult>();
+
             try
             {
-                var messages = new List<MessageSendingResult>();
-
-                var serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, MessageSendingResult>[]), settings);
-                var items = serializer.ReadObject(content) as Dictionary<Int64, MessageSendingResult>[];
+                var serializer = new DataContractJsonSerializer(typeof(Dictionary<Int64, MessageSending>[]), settings);
+				var items = serializer.ReadObject(content) as Dictionary<Int64, MessageSending>[];
 
                 if (items == null) 
                     return messages;
 
                 foreach (var one in items)
                 {
-                    var item = one.First().Value;
+					var item = one.First().Value;
                     item.Phone = one.First().Key;
-                    messages.Add(item);
+					if(item.Error == 0)
+					{
+					    var success = new MessageSendingSuccess{
+							Phone = item.Phone,
+							MessageId = item.MessageId,
+							MessagesCount = item.MessagesCount,
+							Cost = item.Cost,
+							Currency = item.Currency
+						};
+						messages.Add(success);
+					}
+					else
+					{
+						var error = new MessageSendingError{
+							Phone = item.Phone,
+							Code = item.Error
+						};
+						messages.Add(error);
+					}
                 }
 
                 return messages;

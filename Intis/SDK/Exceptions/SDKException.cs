@@ -8,7 +8,7 @@ namespace Intis.SDK.Exceptions
 	public class SdkException : Exception
 	{
         public int Code { get; private set; }
-	    private static string GetMessage(int code){
+	    public static string GetMessage(int code){
 			var messages = new Dictionary<int, string>
 			{
 				{0, "Service is disabled"},

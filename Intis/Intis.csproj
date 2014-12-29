@@ -43,6 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SDK\AClient.cs" />
+    <Compile Include="SDK\Entity\MessageSending.cs" />
+    <Compile Include="SDK\Entity\MessageSendingError.cs" />
+    <Compile Include="SDK\Entity\MessageSendingSuccess.cs" />
     <Compile Include="SDK\Exceptions\AddTemplateException.cs" />
     <Compile Include="SDK\Exceptions\AddToStopListException.cs" />
     <Compile Include="SDK\Exceptions\BalanceException.cs" />
