@@ -1,4 +1,5 @@
 ﻿using Intis.SDK;
+using Intis.SDK.Exceptions;
 
 namespace Examples
 {
@@ -12,9 +13,21 @@ namespace Examples
 
 			var client = new IntisClient(login, apiKey, apiHost);
 
-			var balance = client.GetBalance();
-			var amount = balance.Amount;
-			var currency = balance.Currency;
+            try {
+			    var balance = client.GetBalance();
+			    var amount = balance.Amount;
+			    var currency = balance.Currency;
+            }
+            catch (BalanceException ex)
+            {
+                var message = ex.Message;
+                var parameters = ex.Parameters;
+            }
+            catch (SdkException ex)
+            {
+                var message = ex.Message;
+                var code = ex.Code;
+            }
 		}
 	}
 }

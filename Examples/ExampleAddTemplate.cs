@@ -1,4 +1,5 @@
 ﻿using Intis.SDK;
+using Intis.SDK.Exceptions;
 
 namespace Examples
 {
@@ -11,7 +12,20 @@ namespace Examples
 			const string apiHost = "http://dev.sms16.ru/get/";
 			var client = new IntisClient(login, apiKey, apiHost);
 
-			var template = client.AddTemplate("test55", "this is test");
+		    try
+		    {
+		        var template = client.AddTemplate("test55", "this is test");
+		    }
+		    catch (TemplateException ex)
+		    {
+		        var message = ex.Message;
+		        var parameters = ex.Parameters;
+		    }
+		    catch (SdkException ex)
+		    {
+		        var code = ex.Code;
+		        var message = ex.Message;
+		    }
 		}
 	}
 }

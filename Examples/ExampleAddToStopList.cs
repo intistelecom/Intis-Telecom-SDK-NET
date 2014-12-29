@@ -1,4 +1,5 @@
 ﻿using Intis.SDK;
+using Intis.SDK.Exceptions;
 
 namespace Examples
 {
@@ -11,7 +12,20 @@ namespace Examples
 			const string apiHost = "http://dev.sms16.ru/get/";
 			var client = new IntisClient(login, apiKey, apiHost);
 
-            var list = client.AddToStopList(79009009096);
+		    try
+		    {
+		        var list = client.AddToStopList(79009009096);
+		    }
+		    catch (AddToStopListException ex)
+		    {
+		        var message = ex.Message;
+		        var parameters = ex.Parameters;
+		    }
+		    catch (SdkException ex)
+		    {
+                var message = ex.Message;
+		        var code = ex.Code;
+		    }
 		}
 	}
 }

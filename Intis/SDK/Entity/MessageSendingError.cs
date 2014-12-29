@@ -1,9 +1,9 @@
 ﻿using Intis.SDK.Exceptions;
-using System.Runtime.Serialization;
+
 
 namespace Intis.SDK.Entity
 {
-	class MessageSendingError : MessageSendingResult
+	public class MessageSendingError : MessageSendingResult
 	{
 		/// <summary>
 		/// Error text in SMS sending

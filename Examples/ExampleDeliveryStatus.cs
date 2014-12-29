@@ -1,4 +1,5 @@
 ﻿using Intis.SDK;
+using Intis.SDK.Exceptions;
 
 namespace Examples
 {
@@ -12,14 +13,26 @@ namespace Examples
 
 			var client = new IntisClient(login, apiKey, apiHost);
 
-			var messageId = new [] { "4196226820248326060001" };
+            try { 
+			    var messageId = new [] { "4196226820248326060001" };
 
-            var status = client.GetDeliveryStatus(messageId);
-            foreach (var one in status)
+                var status = client.GetDeliveryStatus(messageId);
+                foreach (var one in status)
+                {
+                    var meassageId = one.MessageId;
+                    var messageStatue = one.MessageStatus;
+                    var createdAt = one.CreatedAt;
+                }
+            }
+            catch (DeliveryStatusException ex)
             {
-                var meassageId = one.MessageId;
-                var messageStatue = one.MessageStatus;
-                var createdAt = one.CreatedAt;
+                var message = ex.Message;
+                var parameters = ex.Parameters;
+            }
+            catch (SdkException ex)
+            {
+                var message = ex.Message;
+                var code = ex.Code;
             }
 		}
 	}

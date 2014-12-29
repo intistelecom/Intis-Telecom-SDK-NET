@@ -1,4 +1,5 @@
 ﻿using Intis.SDK;
+using Intis.SDK.Exceptions;
 
 namespace Examples
 {
@@ -11,14 +12,26 @@ namespace Examples
 			const string apiHost = "http://dev.sms16.ru/get/";
 			var client = new IntisClient(login, apiKey, apiHost);
 
-            var messages = client.GetIncomingMessages("2014-10-27");
-            foreach (var one in messages)
+            try {
+                var messages = client.GetIncomingMessages("2014-10-27");
+                foreach (var one in messages)
+                {
+                    var messageId = one.MessageId;
+                    var originator = one.Originator;
+                    var prefix = one.Prefix;
+                    var receivedAt = one.ReceivedAt;
+                    var text = one.Text;
+                }
+            }
+            catch (IncomingMessageException ex)
             {
-                var messageId = one.MessageId;
-                var originator = one.Originator;
-                var prefix = one.Prefix;
-                var receivedAt = one.ReceivedAt;
-                var text = one.Text;
+                var message = ex.Message;
+                var parameters = ex.Parameters;
+            }
+            catch (SdkException ex)
+            {
+                var message = ex.Message;
+                var code = ex.Code;
             }
 		}
 	}

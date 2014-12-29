@@ -1,4 +1,5 @@
 ﻿using Intis.SDK;
+using Intis.SDK.Exceptions;
 
 namespace Examples
 {
@@ -12,11 +13,24 @@ namespace Examples
 
 			var client = new IntisClient(login, apiKey, apiHost);
 
-            var originators = client.GetOriginators();
-            foreach (var one in originators)
+		    try
+		    {
+		        var originators = client.GetOriginators();
+		        foreach (var one in originators)
+		        {
+		            var name = one.Name;
+		            var state = one.State;
+		        }
+            }
+            catch (OriginatorException ex)
             {
-                var name = one.Name;
-                var state = one.State;
+                var message = ex.Message;
+                var parameters = ex.Parameters;
+            }
+            catch (SdkException ex)
+            {
+                var message = ex.Message;
+                var code = ex.Code;
             }
 		}
 	}

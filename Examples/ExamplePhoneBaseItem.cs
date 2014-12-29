@@ -1,4 +1,5 @@
 ﻿using Intis.SDK;
+using Intis.SDK.Exceptions;
 
 namespace Examples
 {
@@ -12,19 +13,31 @@ namespace Examples
 
 			var client = new IntisClient(login, apiKey, apiHost);
 
-            var bases = client.GetPhoneBaseItems(125480, 2);
-            foreach (var one in bases)
+            try {
+                var bases = client.GetPhoneBaseItems(125480, 2);
+                foreach (var one in bases)
+                {
+                    var phone = one.Phone;
+                    var firstName = one.FirstName;
+                    var middleName = one.MiddleName;
+                    var lastName = one.LastName;
+                    var birthDay = one.BirthDay;
+                    var area = one.Area;
+                    var gender= one.Gender;
+                    var network = one.Network;
+                    var note1= one.Note1;
+                    var note2= one.Note2;
+                }
+            }
+            catch (PhoneBaseItemException ex)
             {
-                var phone = one.Phone;
-                var firstName = one.FirstName;
-                var middleName = one.MiddleName;
-                var lastName = one.LastName;
-                var birthDay = one.BirthDay;
-                var area = one.Area;
-                var gender= one.Gender;
-                var network = one.Network;
-                var note1= one.Note1;
-                var note2= one.Note2;
+                var message = ex.Message;
+                var parameters = ex.Parameters;
+            }
+            catch (SdkException ex)
+            {
+                var message = ex.Message;
+                var code = ex.Code;
             }
 		}
 	}
