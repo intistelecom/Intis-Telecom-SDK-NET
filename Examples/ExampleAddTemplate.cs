@@ -7,14 +7,14 @@ namespace Examples
 	{
 		static void AddTemplate()
 		{
-			const string login = "rso";
-			const string apiKey = "cfe4fb6f670914b7897cc2783234b7428d6dc826";
-			const string apiHost = "http://dev.sms16.ru/get/";
+            const string login = "your api login";
+            const string apiKey = "your api key here";
+			const string apiHost = "http://api.host.com/get/";
 			var client = new IntisClient(login, apiKey, apiHost);
 
 		    try
 		    {
-		        var template = client.AddTemplate("test55", "this is test");
+		        var template = client.AddTemplate("test", "this is test");
 		    }
 		    catch (TemplateException ex)
 		    {

@@ -7,9 +7,9 @@ namespace Examples
 	{
 		static void GetOriginator()
 		{
-			const string login = "rso";
-			const string apiKey = "cfe4fb6f670914b7897cc2783234b7428d6dc826";
-			const string apiHost = "http://dev.sms16.ru/get/";
+            const string login = "your api login";
+            const string apiKey = "your api key here";
+            const string apiHost = "http://api.host.com/get/";
 
 			var client = new IntisClient(login, apiKey, apiHost);
 
