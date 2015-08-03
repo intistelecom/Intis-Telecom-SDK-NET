@@ -158,13 +158,18 @@ namespace Intis.SDK
 					UseSimpleDictionaryFormat = true
 				};
 
-				var serializer = new DataContractJsonSerializer(typeof(List<DeliveryStatus>), settings);
-				var items = serializer.ReadObject(content) as List<DeliveryStatus>;
+				var serializer = new DataContractJsonSerializer(typeof(Dictionary<string, DeliveryStatus>), settings);
+				var items = serializer.ReadObject(content) as Dictionary<string, DeliveryStatus>;
 
 				if (items == null)
 					return deliveryStatus;
 
-				deliveryStatus.AddRange(items);
+				foreach (var one in items)
+				{
+					var item = one.Value;
+					item.MessageId = one.Key;
+					deliveryStatus.Add(item);
+				}
 
 				return deliveryStatus;
 			}

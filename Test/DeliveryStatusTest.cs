@@ -46,7 +46,7 @@ namespace Test
 
 		private string getData()
 		{
-			return "[{\"messageId\":1, \"status\":\"deliver\", \"time\":\"2014-10-05\"},{\"messageId\":2, \"status\":\"not_deliver\", \"time\":\"2014-10-01\"}]";
+			return "{\"4385937961543210880001\":{\"status\":\"deliver\", \"time\":\"2014-10-05\"},\"4385937961543210880002\":{\"status\":\"not_deliver\", \"time\":\"2014-10-01\"}}";
 		}
 
 		private string getErrorData()

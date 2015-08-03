@@ -9,7 +9,6 @@ namespace Intis.SDK.Entity
         /// Message ID
         /// </summary>
         /// <returns>string</returns>
-		[DataMember(Name = "messageId")]
 		public string MessageId { get; set; }
 
         /// <summary>

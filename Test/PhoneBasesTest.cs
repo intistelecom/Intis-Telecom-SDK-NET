@@ -51,7 +51,6 @@ namespace Test
 		{
 			return "{\"125480\":{\"name\":\"989878979\",\"time_birth\":\"12:00:00\",\"day_before\":\"0\",\"local_time\":\"1\",\"birth_sender\":\"\",\"birth_text\":\"\",\"on_birth\":\"0\",\"count\":\"0\",\"pages\":0}," +
             "\"125473\":{\"name\":\"654564\",\"time_birth\":\"12:00:00\",\"day_before\":\"0\",\"local_time\":\"1\",\"birth_sender\":\"\",\"birth_text\":\"\",\"on_birth\":\"0\",\"count\":\"367\",\"pages\":4}}";
-        ;
 		}
 
 		private string getErrorData()
