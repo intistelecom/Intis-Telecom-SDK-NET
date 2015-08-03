@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Runtime.Serialization;
 
 namespace Intis.SDK.Exceptions
 {
-    public class BalanceException : Exception
+    public class HlrStatItemException : Exception
     {
 		public NameValueCollection Parameters { get; set; }
 
-	    public BalanceException(NameValueCollection parameters)
+	    public HlrStatItemException(NameValueCollection parameters)
 	    {
 		    Parameters = parameters;
 	    }
 
-	    public BalanceException(NameValueCollection parameters, Exception innerException)
+		public HlrStatItemException(NameValueCollection parameters, Exception innerException)
 		    : base(innerException.Message)
 	    {
 			Parameters = parameters;

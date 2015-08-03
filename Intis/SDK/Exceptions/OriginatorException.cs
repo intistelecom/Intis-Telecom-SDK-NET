@@ -1,14 +1,21 @@
-﻿using System.Collections.Specialized;
-using System.Runtime.Serialization;
+﻿using System;
+using System.Collections.Specialized;
 
 namespace Intis.SDK.Exceptions
 {
-    public class OriginatorException : SdkSerializationException
+    public class OriginatorException : Exception
     {
-        public OriginatorException(NameValueCollection parameters)
-            : base(parameters){}
+        public NameValueCollection Parameters { get; set; }
 
-        public OriginatorException(NameValueCollection parameters, SerializationException innerException)
-            : base(parameters, innerException){}
+	    public OriginatorException(NameValueCollection parameters)
+	    {
+		    Parameters = parameters;
+	    }
+
+		public OriginatorException(NameValueCollection parameters, Exception innerException)
+		    : base(innerException.Message)
+	    {
+			Parameters = parameters;
+	    }
     }
 }

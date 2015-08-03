@@ -1,14 +1,22 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Runtime.Serialization;
 
 namespace Intis.SDK.Exceptions
 {
-    public class DailyStatsException : SdkSerializationException
+    public class DailyStatsException : Exception
     {
-        public DailyStatsException(NameValueCollection parameters)
-            : base(parameters){}
+		public NameValueCollection Parameters { get; set; }
 
-        public DailyStatsException(NameValueCollection parameters, SerializationException innerException)
-            : base(parameters, innerException){}
+	    public DailyStatsException(NameValueCollection parameters)
+	    {
+		    Parameters = parameters;
+	    }
+
+		public DailyStatsException(NameValueCollection parameters, Exception innerException)
+		    : base(innerException.Message)
+	    {
+			Parameters = parameters;
+	    }
     }
 }

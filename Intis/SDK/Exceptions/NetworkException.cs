@@ -1,14 +1,22 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Runtime.Serialization;
 
 namespace Intis.SDK.Exceptions
 {
-    public class NetworkException:SdkSerializationException
+    public class NetworkException : Exception
     {
-         public NetworkException(NameValueCollection parameters)
-            : base(parameters){}
+		public NameValueCollection Parameters { get; set; }
 
-         public NetworkException(NameValueCollection parameters, SerializationException innerException)
-            : base(parameters, innerException){}
+	    public NetworkException(NameValueCollection parameters)
+	    {
+		    Parameters = parameters;
+	    }
+
+		public NetworkException(NameValueCollection parameters, Exception innerException)
+		    : base(innerException.Message)
+	    {
+			Parameters = parameters;
+	    }
     }
 }

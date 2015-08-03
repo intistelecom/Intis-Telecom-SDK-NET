@@ -1,14 +1,22 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Runtime.Serialization;
 
 namespace Intis.SDK.Exceptions
 {
-    public class IncomingMessageException : SdkSerializationException
+    public class IncomingMessageException : Exception
     {
-        public IncomingMessageException(NameValueCollection parameters)
-            : base(parameters){}
+		public NameValueCollection Parameters { get; set; }
 
-        public IncomingMessageException(NameValueCollection parameters, SerializationException innerException)
-            : base(parameters, innerException){}
+	    public IncomingMessageException(NameValueCollection parameters)
+	    {
+		    Parameters = parameters;
+	    }
+
+		public IncomingMessageException(NameValueCollection parameters, Exception innerException)
+		    : base(innerException.Message)
+	    {
+			Parameters = parameters;
+	    }
     }
 }

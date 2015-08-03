@@ -16,8 +16,14 @@ namespace Intis.SDK
         protected string Login;
         protected string ApiKey;
         protected string ApiHost;
+		protected IApiConnector ApiConnector;
 
-        public MemoryStream GetStreamContent(string scriptName, NameValueCollection parameters)
+		protected AClient(IApiConnector apiConnector)
+		{
+			ApiConnector = apiConnector ?? new HttpApiConnector();
+		}
+
+	    public MemoryStream GetStreamContent(string scriptName, NameValueCollection parameters)
         {
             var result = GetContent(scriptName, parameters);
 
@@ -31,15 +37,17 @@ namespace Intis.SDK
         {
             var allParameters = GetParameters(parameters);
             var url = ApiHost + scriptName + ".php";
-            var result = getContentFromApi(url, allParameters);
+			var result = ApiConnector.GetContentFromApi(url, allParameters);
             checkException(result);
 
             return result;
         }
 
-        private string GetTimestamp() {
-            var client = new WebClient();
-            var timestamp = client.DownloadString(ApiHost + "timestamp.php");
+        private string GetTimestamp()
+        {
+	        string url = ApiHost + "timestamp.php";
+			var timestamp = ApiConnector.GetTimestampFromApi(url);
+
             return timestamp;
         }
 
@@ -104,28 +112,6 @@ namespace Intis.SDK
 		    var list = serializer.Deserialize<Dictionary<string, int>>(result);
 
 		    throw new SdkException(list.First().Value);
-        }
-
-        private string getContentFromApi(string url, NameValueCollection allParameters)
-        {
-            var encodeParameters = new NameValueCollection();
-
-            for (var i = 0; i <= allParameters.Count - 1; i++)
-            {
-                var param = HttpUtility.UrlEncode(allParameters.Get(i));
-                if(param != null)
-                    encodeParameters.Add(allParameters.GetKey(i), param);
-            }
-
-            var client = new WebClient
-            {
-                QueryString = encodeParameters, 
-                Encoding = Encoding.UTF8
-            };
-
-            var result = client.DownloadString(url);
-
-            return result;
         }
     }
 }

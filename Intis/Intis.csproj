@@ -51,8 +51,8 @@
     <Compile Include="SDK\Exceptions\BalanceException.cs" />
     <Compile Include="SDK\Exceptions\DailyStatsException.cs" />
     <Compile Include="SDK\Exceptions\DeliveryStatusException.cs" />
-    <Compile Include="SDK\Exceptions\HdkResponseException.cs" />
-    <Compile Include="SDK\Exceptions\HdkStatItemException.cs" />
+    <Compile Include="SDK\Exceptions\HlrResponseException.cs" />
+    <Compile Include="SDK\Exceptions\HlrStatItemException.cs" />
     <Compile Include="SDK\Exceptions\IncomingMessageException.cs" />
     <Compile Include="SDK\Exceptions\MessageSendingResultException.cs" />
     <Compile Include="SDK\Exceptions\NetworkException.cs" />
@@ -78,9 +78,10 @@
     <Compile Include="SDK\Entity\Stats.cs" />
     <Compile Include="SDK\Entity\StopList.cs" />
     <Compile Include="SDK\Entity\Template.cs" />
-    <Compile Include="SDK\Exceptions\SdkSerializationException.cs" />
     <Compile Include="SDK\Exceptions\StopListException.cs" />
     <Compile Include="SDK\Exceptions\TemplateException.cs" />
+    <Compile Include="SDK\HttpApiConnector.cs" />
+    <Compile Include="SDK\IApiConnector.cs" />
     <Compile Include="SDK\IntisClient.cs" />
     <Compile Include="SDK\Entity\Balance.cs" />
     <Compile Include="SDK\IClient.cs" />
@@ -88,6 +89,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Test\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

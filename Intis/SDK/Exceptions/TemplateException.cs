@@ -1,14 +1,21 @@
-﻿using System.Collections.Specialized;
-using System.Runtime.Serialization;
+﻿using System;
+using System.Collections.Specialized;
 
 namespace Intis.SDK.Exceptions
 {
-    public class TemplateException : SdkSerializationException
+    public class TemplateException : Exception
     {
-        public TemplateException(NameValueCollection parameters)
-            : base(parameters){}
+		public NameValueCollection Parameters { get; set; }
 
-        public TemplateException(NameValueCollection parameters, SerializationException innerException)
-            : base(parameters, innerException){}
+	    public TemplateException(NameValueCollection parameters)
+	    {
+		    Parameters = parameters;
+	    }
+
+		public TemplateException(NameValueCollection parameters, Exception innerException)
+		    : base(innerException.Message)
+	    {
+			Parameters = parameters;
+	    }
     }
 }
