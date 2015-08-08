@@ -1,17 +1,46 @@
-﻿using Intis.SDK.Entity;
+﻿// The MIT License (MIT)
+// Copyright (c) 2015 Intis Telecom
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+
+using Intis.SDK.Entity;
 using Intis.SDK.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Web.Script.Serialization;
 
 namespace Intis.SDK
 {
+	/// <summary>
+	/// Class IntisClient
+	/// The main class for SMS sending and getting API information
+	/// </summary>
 	public class IntisClient : AClient, IClient
 	{
+		/// <summary>
+		/// Class constructor
+		/// </summary>
+		/// <param name="login">user login</param>
+		/// <param name="apiKey">user API key</param>
+		/// <param name="apiHost">API address</param>
 		public IntisClient(string login, string apiKey, string apiHost)
 			: base(null)
 		{
@@ -19,6 +48,14 @@ namespace Intis.SDK
 			ApiKey = apiKey;
 			ApiHost = apiHost;
 		}
+
+		/// <summary>
+		/// Class constructor
+		/// </summary>
+		/// <param name="login">user login</param>
+		/// <param name="apiKey">user API key</param>
+		/// <param name="apiHost">API address</param>
+		/// <param name="apiConnector">API data connector</param>
 		public IntisClient(string login, string apiKey, string apiHost, IApiConnector apiConnector)
 			: base(apiConnector)
 		{
@@ -27,6 +64,10 @@ namespace Intis.SDK
 			ApiHost = apiHost;
 		}
 
+		/// <summary>
+		/// Getting user balance
+		/// </summary>
+		/// <returns>Balance</returns>
 		public Balance GetBalance()
 		{
 			var parameters = new NameValueCollection();
@@ -45,6 +86,10 @@ namespace Intis.SDK
 			}
 		}
 
+		/// <summary>
+		/// Getting all user lists
+		/// </summary>
+		/// <returns>List of phone base</returns>
 		public List<PhoneBase> GetPhoneBases()
 		{
 			var parameters = new NameValueCollection();
@@ -79,6 +124,10 @@ namespace Intis.SDK
 			}
 		}
 
+		/// <summary>
+		/// Getting all user sender names
+		/// </summary>
+		/// <returns>List of senders with its statuses</returns>
 		public List<Originator> GetOriginators()
 		{
 			var parameters = new NameValueCollection();
@@ -101,6 +150,12 @@ namespace Intis.SDK
 			}
 		}
 
+		/// <summary>
+		/// Getting subscribers of list
+		/// </summary>
+		/// <param name="baseId">List ID</param>
+		/// <param name="page">Page of list</param>
+		/// <returns>List subscribers</returns>
 		public List<PhoneBaseItem> GetPhoneBaseItems(int baseId, int page = 1)
 		{
 			var parameters = new NameValueCollection()
@@ -140,6 +195,11 @@ namespace Intis.SDK
 			}
 		}
 
+		/// <summary>
+		/// Getting message status
+		/// </summary>
+		/// <param name="messageId">Message ID</param>
+		/// <returns>List of message status</returns>
 		public List<DeliveryStatus> GetDeliveryStatus(string[] messageId)
 		{
 			var parameters = new NameValueCollection()
@@ -179,6 +239,13 @@ namespace Intis.SDK
 			}
 		}
 
+		/// <summary>
+		/// SMS sending
+		/// </summary>
+		/// <param name="phone">Phone numbers</param>
+		/// <param name="originator">Sender name</param>
+		/// <param name="text">Sms text</param>
+		/// <returns>Results list</returns>
 		public List<MessageSendingResult> SendMessage(Int64[] phone, string originator, string text)
 		{
 			var parameters = new NameValueCollection()
@@ -240,6 +307,11 @@ namespace Intis.SDK
 			}
 		}
 
+		/// <summary>
+		/// Testing phone number for stop list
+		/// </summary>
+		/// <param name="phone">Phone number</param>
+		/// <returns>Stop list</returns>
 		public StopList CheckStopList(Int64 phone)
 		{
 			var parameters = new NameValueCollection()
@@ -274,6 +346,11 @@ namespace Intis.SDK
 			}
 		}
 
+		/// <summary>
+		/// Adding number to stop list
+		/// </summary>
+		/// <param name="phone">Phone number</param>
+		/// <returns>ID in stop list</returns>
 		public Int64 AddToStopList(Int64 phone)
 		{
 			var parameters = new NameValueCollection()
@@ -296,6 +373,10 @@ namespace Intis.SDK
 			}
 		}
 
+		/// <summary>
+		/// Getting user templates
+		/// </summary>
+		/// <returns>List of templates</returns>
 		public List<Template> GetTemplates()
 		{
 			var parameters = new NameValueCollection();
@@ -332,6 +413,12 @@ namespace Intis.SDK
 			}
 		}
 
+		/// <summary>
+		/// Adding user template
+		/// </summary>
+		/// <param name="title">Template name</param>
+		/// <param name="template">Text of template</param>
+		/// <returns>ID in the template list</returns>
 		public Int64 AddTemplate(string title, string template)
 		{
 			var parameters = new NameValueCollection()
@@ -355,6 +442,12 @@ namespace Intis.SDK
 			}
 		}
 
+		/// <summary>
+		/// Getting statistics for the certain month
+		/// </summary>
+		/// <param name="year">Year</param>
+		/// <param name="month">Month</param>
+		/// <returns>Statistics</returns>
 		public List<DailyStats> GetDailyStatsByMonth(int year, int month)
 		{
 			var date = new DateTime(year, month, 1, 0, 0, 0);
@@ -384,6 +477,11 @@ namespace Intis.SDK
 			}
 		}
 
+		/// <summary>
+		/// Sending HLR request for number
+		/// </summary>
+		/// <param name="phone">Phone number</param>
+		/// <returns>Results list</returns>
 		public List<HlrResponse> MakeHlrRequest(Int64[] phone)
 		{
 			var parameters = new NameValueCollection()
@@ -411,6 +509,12 @@ namespace Intis.SDK
 			}
 		}
 
+		/// <summary>
+		/// Getting statuses of HLR request
+		/// </summary>
+		/// <param name="from">Initial date in the format YYYY-MM-DD</param>
+		/// <param name="to">Final date in the format YYYY-MM-DD</param>
+		/// <returns>Statuses</returns>
 		public List<HlrStatItem> GetHlrStats(string from, string to)
 		{
 			var parameters = new NameValueCollection()
@@ -446,6 +550,11 @@ namespace Intis.SDK
 			}
 		}
 
+		/// <summary>
+		/// Getting the operator of subscriber phone number
+		/// </summary>
+		/// <param name="phone">Phone number</param>
+		/// <returns>Operator</returns>
 		public Network GetNetworkByPhone(Int64 phone)
 		{
 			var parameters = new NameValueCollection()
@@ -468,6 +577,11 @@ namespace Intis.SDK
 			}
 		}
 
+		/// <summary>
+		/// Getting incoming messages of certain date
+		/// </summary>
+		/// <param name="date">Date in the format YYYY-MM-DD</param>
+		/// <returns>List of incoming messages</returns>
 		public List<IncomingMessage> GetIncomingMessages(string date)
 		{
 			var parameters = new NameValueCollection()
