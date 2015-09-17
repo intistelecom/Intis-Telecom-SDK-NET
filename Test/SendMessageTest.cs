@@ -39,7 +39,7 @@ namespace Test
 
 			var client = new IntisClient(Login, ApiKey, ApiHost, connector);
 
-			var phones = new[] { 79802002020, 79808009090 };
+            var phones = new[] { 442073238000, 442073238001 };
 
 			var status = client.SendMessage(phones, "smstest", "test").ToArray();
 			foreach (var one in status)
@@ -73,14 +73,14 @@ namespace Test
 
 			var client = new IntisClient(Login, ApiKey, ApiHost, connector);
 
-			var phones = new[] { 79802002020, 79808009090 };
+            var phones = new[] { 442073238000, 442073238001 };
 
 			client.SendMessage(phones, "smstest", "test");
 		}
 
 		private string getData()
 		{
-			return "{\"79802002020\":{\"error\":\"0\",\"id_sms\":\"4384607771347164730001\",\"cost\":1,\"count_sms\":1,\"sender\":\"smstest\",\"network\":\" Russia MTC\",\"ported\":0},\"79009009091\":{\"error\":31}}";
+            return "{\"442073238000\":{\"error\":\"0\",\"id_sms\":\"4384607771347164730001\",\"cost\":1,\"count_sms\":1,\"sender\":\"smstest\",\"network\":\"Landline\",\"ported\":0},\"442073238001\":{\"error\":31}}";
 		}
 
 		private string getErrorData()

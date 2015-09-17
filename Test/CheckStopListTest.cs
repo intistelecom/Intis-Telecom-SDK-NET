@@ -38,7 +38,7 @@ namespace Test
 
 			var client = new IntisClient(Login, ApiKey, ApiHost, connector);
 
-			var list = client.CheckStopList(79009009090);
+            var list = client.CheckStopList(442073238000);
 			var id = list.Id;
 			var timeAddedAt = list.TimeAddedAt;
 			var description = list.Description;
@@ -54,7 +54,7 @@ namespace Test
 
 			var client = new IntisClient(Login, ApiKey, ApiHost, connector);
 
-			client.CheckStopList(79009009090);
+            client.CheckStopList(442073238000);
 		}
 
 		private string getData()

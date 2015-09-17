@@ -39,7 +39,7 @@ namespace Test
 
 			var client = new IntisClient(Login, ApiKey, ApiHost, connector);
 
-			var id = client.AddToStopList(79009009096);
+            var id = client.AddToStopList(442073238000);
 
 			Assert.IsNotNull(id);
 		}
@@ -52,7 +52,7 @@ namespace Test
 
 			var client = new IntisClient(Login, ApiKey, ApiHost, connector);
 
-			client.AddToStopList(79009009096);
+            client.AddToStopList(442073238000);
 		}
 
 		private string getData()

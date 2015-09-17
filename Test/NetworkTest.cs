@@ -39,7 +39,7 @@ namespace Test
 
 			var client = new IntisClient(Login, ApiKey, ApiHost, connector);
 
-			var network = client.GetNetworkByPhone(79000000000);
+            var network = client.GetNetworkByPhone(442073238000);
 			var title = network.Title;
 
 			Assert.IsNotNull(network);
@@ -53,7 +53,7 @@ namespace Test
 
 			var client = new IntisClient(Login, ApiKey, ApiHost, connector);
 
-			client.GetNetworkByPhone(79000000000);
+            client.GetNetworkByPhone(442073238000);
 		}
 
 		private string getData()

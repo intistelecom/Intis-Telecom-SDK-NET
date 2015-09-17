@@ -59,7 +59,7 @@ namespace Test
 
 		private string getData()
 		{
-			return "{\"money\":4, \"currency\":\"RUB\"}";
+            return "{\"money\":4, \"currency\":\"GBP\"}";
 		}
 
 		private string getErrorData()
