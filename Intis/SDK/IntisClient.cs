@@ -442,13 +442,41 @@ namespace Intis.SDK
 			}
 		}
 
-		/// <summary>
-		/// Getting statistics for the certain month
-		/// </summary>
-		/// <param name="year">Year</param>
-		/// <param name="month">Month</param>
-		/// <returns>Statistics</returns>
-		public List<DailyStats> GetDailyStatsByMonth(int year, int month)
+        /// <summary>
+        /// Remove user template
+        /// </summary>
+        /// <param name="name">Name of template</param>
+        /// <returns>Result</returns>
+        public RemoveTemplateResponse RemoveTemplate(string name)
+        {
+            var parameters = new NameValueCollection()
+            {
+                {"name", name}
+            };
+
+            try
+            {
+                var content = GetStreamContent("del_template", parameters);
+
+                var serializer = new DataContractJsonSerializer(typeof(RemoveTemplateResponse));
+                var result = serializer.ReadObject(content) as RemoveTemplateResponse;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new RemoveTemplateException(parameters, ex);
+            }
+        }
+        
+
+        /// <summary>
+        /// Getting statistics for the certain month
+        /// </summary>
+        /// <param name="year">Year</param>
+        /// <param name="month">Month</param>
+        /// <returns>Statistics</returns>
+        public List<DailyStats> GetDailyStatsByMonth(int year, int month)
 		{
 			var date = new DateTime(year, month, 1, 0, 0, 0);
 
@@ -477,12 +505,13 @@ namespace Intis.SDK
 			}
 		}
 
-		/// <summary>
-		/// Sending HLR request for number
-		/// </summary>
-		/// <param name="phone">Phone number</param>
-		/// <returns>Results list</returns>
-		public List<HlrResponse> MakeHlrRequest(Int64[] phone)
+
+        /// <summary>
+        /// Sending HLR request for number
+        /// </summary>
+        /// <param name="phone">Phone number</param>
+        /// <returns>Results list</returns>
+        public List<HlrResponse> MakeHlrRequest(Int64[] phone)
 		{
 			var parameters = new NameValueCollection()
             {

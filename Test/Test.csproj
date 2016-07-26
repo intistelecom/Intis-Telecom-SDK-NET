@@ -45,7 +45,9 @@
     </When>
     <Otherwise>
       <ItemGroup>
-        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework" />
+        <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework">
+          <Private>False</Private>
+        </Reference>
       </ItemGroup>
     </Otherwise>
   </Choose>
@@ -67,6 +69,7 @@
     <Compile Include="HlrStatsTest.cs" />
     <Compile Include="NetworkTest.cs" />
     <Compile Include="IncomingMessageTest.cs" />
+    <Compile Include="RemoteTemplateTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Intis\Intis.csproj">

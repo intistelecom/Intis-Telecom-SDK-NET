@@ -100,12 +100,19 @@ namespace Intis.SDK
 		/// <returns>ID in the template list</returns>
         Int64 AddTemplate(string title, string template);
 
+	    /// <summary>
+	    /// Remove user template
+	    /// </summary>
+	    /// <param name="name">Template name</param>
+	    /// <returns>Result</returns>
+	    RemoveTemplateResponse RemoveTemplate(string name);
+
         /// <summary>
-		/// Getting statistics for the certain month
+        /// Getting statistics for the certain month
         /// </summary>
         /// <param name="year">Year</param>
         /// <param name="month">Month</param>
-		/// <returns>Statistics</returns>
+        /// <returns>Statistics</returns>
         List<DailyStats> GetDailyStatsByMonth(int year, int month);
 
         /// <summary>
