@@ -666,10 +666,10 @@ namespace Intis.SDK
 		}
 
         /// <summary>
-		/// Getting incoming messages of certain date
-		/// </summary>
-		/// <param name="from">Date in the format YYYY-MM-DD</param>
-		/// <param name="to">Date to end in the format YYYY-MM-DD</param>
+		/// Getting incoming messages for the period
+        /// </summary>
+        /// <param name="from">Initial date in the format YYYY-MM-DD HH:II:SS</param>
+        /// <param name="to">Finel date in the format YYYY-MM-DD HH:II:SS</param>
 		/// <returns>List of incoming messages</returns>
 		public List<IncomingMessage> GetIncomingMessages(string from, string to)
         {

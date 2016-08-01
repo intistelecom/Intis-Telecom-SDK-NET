@@ -183,6 +183,7 @@ var template = client.AddTemplate(title, text); // return ID user template
 To Edit a template to a system run the function `EditTemplate(title, template)` where `title` is a name of a template, and `template` is the text content of a template
 ```net
 var template = client.EditTemplate(title, text); // return ID user template
+```
 
 To get stats about messages you have sent during a particular month use the function `getDailyStatsByMonth(year, month)` where `year` and `month` - are the particular date you need statistics for.
 ```net

@@ -154,10 +154,10 @@ namespace Intis.SDK
         List<IncomingMessage> GetIncomingMessages(string date);
 
         /// <summary>
-		/// Getting incoming messages of certain date
+		/// Getting incoming messages for the period
         /// </summary>
-        /// <param name="from">Initial date in the format YYYY-MM-DD</param>
-        /// <param name="to">Finel date in the format YYYY-MM-DD</param>
+        /// <param name="from">Initial date in the format YYYY-MM-DD HH:II:SS</param>
+        /// <param name="to">Finel date in the format YYYY-MM-DD HH:II:SS</param>
 		/// <returns>List of incoming messages</returns>
         List<IncomingMessage> GetIncomingMessages(string from, string to);
     }
