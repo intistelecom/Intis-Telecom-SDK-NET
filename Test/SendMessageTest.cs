@@ -65,7 +65,40 @@ namespace Test
 			Assert.IsNotNull(status);
 		}
 
-		[TestMethod]
+        [TestMethod]
+        public void TestScheduleSendMessage()
+        {
+            IApiConnector connector = new LocalApiConnector(getData());
+
+            var client = new IntisClient(Login, ApiKey, ApiHost, connector);
+
+            var phones = new[] { 442073238000, 442073238001 };
+
+            var status = client.SendMessage(phones, "smstest", "test", "2016-07-07 15:30").ToArray();
+            foreach (var one in status)
+            {
+                if (one.IsOk)
+                {
+                    var success = (MessageSendingSuccess)one;
+                    var phone = success.Phone;
+                    var messageId = success.MessageId;
+                    var messagesCount = success.MessagesCount;
+                    var cost = success.Cost;
+                    var currency = success.Currency;
+                }
+                else
+                {
+                    var error = (MessageSendingError)one;
+                    var phone = one.Phone;
+                    var errorCode = error.Code;
+                    var errorMessage = error.Message;
+                }
+            }
+
+            Assert.IsNotNull(status);
+        }
+
+        [TestMethod]
 		[ExpectedException(typeof(MessageSendingResultException))]
 		public void TestSendMessageException()
 		{

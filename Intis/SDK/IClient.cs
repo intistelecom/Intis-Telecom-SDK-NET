@@ -69,8 +69,9 @@ namespace Intis.SDK
         /// <param name="phone">Phone number</param>
         /// <param name="originator">Sender name (one of the approved in your account)</param>
         /// <param name="text">SMS text</param>
+        /// <param name="sendingTime">An optional parameter, it is used when it is necessary to schedule SMS messages. Format YYYY-MM-DD HH:ii</param>
 		/// <returns>Results list</returns>
-        List<MessageSendingResult> SendMessage(Int64[] phone, string originator, string text);
+        List<MessageSendingResult> SendMessage(Int64[] phone, string originator, string text, string sendingTime);
 
         /// <summary>
 		/// Testing phone number for stop list
@@ -100,12 +101,20 @@ namespace Intis.SDK
 		/// <returns>ID in the template list</returns>
         Int64 AddTemplate(string title, string template);
 
-	    /// <summary>
-	    /// Remove user template
-	    /// </summary>
-	    /// <param name="name">Template name</param>
-	    /// <returns>Result</returns>
-	    RemoveTemplateResponse RemoveTemplate(string name);
+        /// <summary>
+		/// Edit user template
+        /// </summary>
+        /// <param name="title">Template name</param>
+		/// <param name="template">Text of template</param>
+		/// <returns>ID in the template list</returns>
+        Int64 EditTemplate(string title, string template);
+
+        /// <summary>
+        /// Remove user template
+        /// </summary>
+        /// <param name="name">Template name</param>
+        /// <returns>Result</returns>
+        RemoveTemplateResponse RemoveTemplate(string name);
 
         /// <summary>
         /// Getting statistics for the certain month
@@ -143,5 +152,13 @@ namespace Intis.SDK
         /// <param name="date">Date in the format YYYY-MM-DD</param>
 		/// <returns>List of incoming messages</returns>
         List<IncomingMessage> GetIncomingMessages(string date);
+
+        /// <summary>
+		/// Getting incoming messages of certain date
+        /// </summary>
+        /// <param name="from">Initial date in the format YYYY-MM-DD</param>
+        /// <param name="to">Finel date in the format YYYY-MM-DD</param>
+		/// <returns>List of incoming messages</returns>
+        List<IncomingMessage> GetIncomingMessages(string from, string to);
     }
 }

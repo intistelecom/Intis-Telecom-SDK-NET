@@ -52,7 +52,27 @@ namespace Test
 			Assert.IsNotNull(messages);
 		}
 
-		[TestMethod]
+        [TestMethod]
+        public void TestGetIncomingMessagesForPeriod()
+        {
+            IApiConnector connector = new LocalApiConnector(getData());
+
+            var client = new IntisClient(Login, ApiKey, ApiHost, connector);
+
+            var messages = client.GetIncomingMessages("2014-10-27", "2014-10-30");
+            foreach (var one in messages)
+            {
+                var messageId = one.MessageId;
+                var originator = one.Originator;
+                var prefix = one.Prefix;
+                var receivedAt = one.ReceivedAt;
+                var text = one.Text;
+            }
+
+            Assert.IsNotNull(messages);
+        }
+
+        [TestMethod]
 		[ExpectedException(typeof(IncomingMessageException))]
 		public void TestGetIncomingMessagesException()
 		{
