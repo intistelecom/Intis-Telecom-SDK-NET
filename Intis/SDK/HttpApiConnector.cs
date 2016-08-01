@@ -52,8 +52,7 @@ namespace Intis.SDK
 				QueryString = encodeParameters,
 				Encoding = Encoding.UTF8
 			};
-
-			var result = client.DownloadString(url);
+            var result = client.DownloadString(url);
 
 			return result;
 		}
