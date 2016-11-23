@@ -98,8 +98,9 @@ namespace Intis.SDK
 		/// <returns>timestamp as an string</returns>
         private string GetTimestamp()
         {
-	        string url = ApiHost + "timestamp.php";
-			var timestamp = ApiConnector.GetTimestampFromApi(url);
+            var unixTimestamp = (int)(System.DateTime.UtcNow.Subtract(new System.DateTime(1970, 1, 1))).TotalSeconds;
+            
+			var timestamp = unixTimestamp.ToString();
 
             return timestamp;
         }
