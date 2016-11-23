@@ -45,6 +45,7 @@
     <Compile Include="SDK\Entity\MessageSending.cs" />
     <Compile Include="SDK\Entity\MessageSendingError.cs" />
     <Compile Include="SDK\Entity\MessageSendingSuccess.cs" />
+    <Compile Include="SDK\Entity\RemoveTemplateResponse.cs" />
     <Compile Include="SDK\Exceptions\AddTemplateException.cs" />
     <Compile Include="SDK\Exceptions\AddToStopListException.cs" />
     <Compile Include="SDK\Exceptions\BalanceException.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="SDK\Exceptions\OriginatorException.cs" />
     <Compile Include="SDK\Exceptions\PhoneBaseItemException.cs" />
     <Compile Include="SDK\Exceptions\PhoneBasesException.cs" />
+    <Compile Include="SDK\Exceptions\RemoveTemplateException.cs" />
     <Compile Include="SDK\Exceptions\SdkException.cs" />
     <Compile Include="SDK\Entity\BirthdayGreetingSettings.cs" />
     <Compile Include="SDK\Entity\DailyStats.cs" />

@@ -239,21 +239,26 @@ namespace Intis.SDK
 			}
 		}
 
-		/// <summary>
-		/// SMS sending
-		/// </summary>
-		/// <param name="phone">Phone numbers</param>
-		/// <param name="originator">Sender name</param>
-		/// <param name="text">Sms text</param>
-		/// <returns>Results list</returns>
-		public List<MessageSendingResult> SendMessage(Int64[] phone, string originator, string text)
-		{
+        /// <summary>
+        /// SMS sending
+        /// </summary>
+        /// <param name="phone">Phone numbers</param>
+        /// <param name="originator">Sender name</param>
+        /// <param name="text">Sms text</param>
+        /// <param name="sendingTime">An optional parameter, it is used when it is necessary to schedule SMS messages. Format YYYY-MM-DD HH:ii</param>
+        /// <returns>Results list</returns>
+        public List<MessageSendingResult> SendMessage(Int64[] phone, string originator, string text, string sendingTime = null)
+        {
 			var parameters = new NameValueCollection()
             {
                 {"phone", String.Join(",", phone.Select(p => p.ToString()))},
                 {"sender", originator},
                 {"text", text}
             };
+		    if (sendingTime != null)
+		    {
+                parameters.Add("sendingTime", sendingTime);
+            }
 
 			try
 			{
@@ -442,13 +447,71 @@ namespace Intis.SDK
 			}
 		}
 
-		/// <summary>
-		/// Getting statistics for the certain month
+        /// <summary>
+		/// Edit user template
 		/// </summary>
-		/// <param name="year">Year</param>
-		/// <param name="month">Month</param>
-		/// <returns>Statistics</returns>
-		public List<DailyStats> GetDailyStatsByMonth(int year, int month)
+		/// <param name="title">Template name</param>
+		/// <param name="template">Text of template</param>
+		/// <returns>ID in the template list</returns>
+		public Int64 EditTemplate(string title, string template)
+        {
+            var parameters = new NameValueCollection()
+            {
+                {"name", title},
+                {"text", template},
+                {"override", "1"}
+            };
+
+            try
+            {
+                var content = GetContent("add_template", parameters);
+
+                var serializer = new JavaScriptSerializer();
+                var list = serializer.Deserialize<Dictionary<string, Int64>>(content);
+
+                return list.First().Value;
+            }
+            catch (Exception ex)
+            {
+                throw new AddTemplateException(parameters, ex);
+            }
+        }
+
+        /// <summary>
+        /// Remove user template
+        /// </summary>
+        /// <param name="name">Name of template</param>
+        /// <returns>Result</returns>
+        public RemoveTemplateResponse RemoveTemplate(string name)
+        {
+            var parameters = new NameValueCollection()
+            {
+                {"name", name}
+            };
+
+            try
+            {
+                var content = GetStreamContent("del_template", parameters);
+
+                var serializer = new DataContractJsonSerializer(typeof(RemoveTemplateResponse));
+                var result = serializer.ReadObject(content) as RemoveTemplateResponse;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new RemoveTemplateException(parameters, ex);
+            }
+        }
+        
+
+        /// <summary>
+        /// Getting statistics for the certain month
+        /// </summary>
+        /// <param name="year">Year</param>
+        /// <param name="month">Month</param>
+        /// <returns>Statistics</returns>
+        public List<DailyStats> GetDailyStatsByMonth(int year, int month)
 		{
 			var date = new DateTime(year, month, 1, 0, 0, 0);
 
@@ -477,12 +540,13 @@ namespace Intis.SDK
 			}
 		}
 
-		/// <summary>
-		/// Sending HLR request for number
-		/// </summary>
-		/// <param name="phone">Phone number</param>
-		/// <returns>Results list</returns>
-		public List<HlrResponse> MakeHlrRequest(Int64[] phone)
+
+        /// <summary>
+        /// Sending HLR request for number
+        /// </summary>
+        /// <param name="phone">Phone number</param>
+        /// <returns>Results list</returns>
+        public List<HlrResponse> MakeHlrRequest(Int64[] phone)
 		{
 			var parameters = new NameValueCollection()
             {
@@ -591,34 +655,67 @@ namespace Intis.SDK
 
 			try
 			{
-				var content = GetStreamContent("incoming", parameters);
+			    var list = SendQueryIncomingMessages(parameters);
 
-				var settings = new DataContractJsonSerializerSettings
-				{
-					UseSimpleDictionaryFormat = true
-				};
-
-				var list = new List<IncomingMessage>();
-
-				var serializer = new DataContractJsonSerializer(typeof(Dictionary<string, IncomingMessage>), settings);
-				var items = serializer.ReadObject(content) as Dictionary<string, IncomingMessage>;
-
-				if (items == null)
-					return list;
-
-				foreach (var one in items)
-				{
-					var message = one.Value;
-					message.MessageId = one.Key;
-					list.Add(one.Value);
-				}
-
-				return list;
+                return list;
 			}
 			catch (Exception ex)
 			{
 				throw new IncomingMessageException(parameters, ex);
 			}
 		}
-	}
+
+        /// <summary>
+		/// Getting incoming messages for the period
+        /// </summary>
+        /// <param name="from">Initial date in the format YYYY-MM-DD HH:II:SS</param>
+        /// <param name="to">Finel date in the format YYYY-MM-DD HH:II:SS</param>
+		/// <returns>List of incoming messages</returns>
+		public List<IncomingMessage> GetIncomingMessages(string from, string to)
+        {
+            var parameters = new NameValueCollection()
+            {
+                {"from", from},
+                {"to", to}
+            };
+
+            try
+            {
+                var list = SendQueryIncomingMessages(parameters);
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                throw new IncomingMessageException(parameters, ex);
+            }
+        }
+
+        private List<IncomingMessage> SendQueryIncomingMessages(NameValueCollection parameters)
+	    {
+            var content = GetStreamContent("incoming", parameters);
+
+            var settings = new DataContractJsonSerializerSettings
+            {
+                UseSimpleDictionaryFormat = true
+            };
+
+            var list = new List<IncomingMessage>();
+
+            var serializer = new DataContractJsonSerializer(typeof(Dictionary<string, IncomingMessage>), settings);
+            var items = serializer.ReadObject(content) as Dictionary<string, IncomingMessage>;
+
+            if (items == null)
+                return list;
+
+            foreach (var one in items)
+            {
+                var message = one.Value;
+                message.MessageId = one.Key;
+                list.Add(one.Value);
+            }
+
+            return list;
+        }
+    }
 }

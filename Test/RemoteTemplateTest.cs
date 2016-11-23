@@ -25,67 +25,40 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Test
 {
 	[TestClass]
-	public class IncomingMessageTest
+	public class RemoteTemplateTest
 	{
 		const string Login = "your api login";
 		const string ApiKey = "your api key here";
 		const string ApiHost = "http://api.host.com/get/";
 
 		[TestMethod]
-		public void TestGetIncomingMessages()
+		public void TestRemoveTemplate()
 		{
 
 			IApiConnector connector = new LocalApiConnector(getData());
 
 			var client = new IntisClient(Login, ApiKey, ApiHost, connector);
 
-			var messages = client.GetIncomingMessages("2014-10-27");
-			foreach (var one in messages)
-			{
-				var messageId = one.MessageId;
-				var originator = one.Originator;
-				var prefix = one.Prefix;
-				var receivedAt = one.ReceivedAt;
-				var text = one.Text;
-			}
+			var respomse = client.RemoveTemplate("test1");
+			var result = respomse.Result;
 
-			Assert.IsNotNull(messages);
+			Assert.IsNotNull(respomse);
 		}
 
-        [TestMethod]
-        public void TestGetIncomingMessagesForPeriod()
-        {
-            IApiConnector connector = new LocalApiConnector(getData());
-
-            var client = new IntisClient(Login, ApiKey, ApiHost, connector);
-
-            var messages = client.GetIncomingMessages("2014-10-27", "2014-10-30");
-            foreach (var one in messages)
-            {
-                var messageId = one.MessageId;
-                var originator = one.Originator;
-                var prefix = one.Prefix;
-                var receivedAt = one.ReceivedAt;
-                var text = one.Text;
-            }
-
-            Assert.IsNotNull(messages);
-        }
-
-        [TestMethod]
-		[ExpectedException(typeof(IncomingMessageException))]
-		public void TestGetIncomingMessagesException()
+		[TestMethod]
+		[ExpectedException(typeof(RemoveTemplateException))]
+		public void TestRemoveTemplateException()
 		{
 			IApiConnector connector = new LocalApiConnector(getErrorData());
 
 			var client = new IntisClient(Login, ApiKey, ApiHost, connector);
 
-			client.GetIncomingMessages("2014-10-27");
+			client.RemoveTemplate("test1");
 		}
 
 		private string getData()
 		{
-            return "{\"75396\":{\"date\":\"2015-04-01 14:01:24\",\"sender\":\"442073238000\",\"prefix\":\"\",\"text\":\"test\"},\"75397\":{\"date\":\"2015-04-01 22:31:22\",\"sender\":\"442073238001\",\"prefix\":\"\",\"text\":\"test 1\"},\"75398\":{\"date\":\"2015-04-01 22:37:13\",\"sender\":\"442073238002\",\"prefix\":\"\",\"text\":\"test 2\"},\"75399\":{\"date\":\"2015-04-01 22:39:33\",\"sender\":\"442073238003\",\"prefix\":\"\",\"text\":\"test 3\"}}";
+			return "{\"result\" : \"deleted\"}";
 		}
 
 		private string getErrorData()
