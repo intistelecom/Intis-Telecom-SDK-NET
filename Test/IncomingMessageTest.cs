@@ -47,6 +47,7 @@ namespace Test
 				var prefix = one.Prefix;
 				var receivedAt = one.ReceivedAt;
 				var text = one.Text;
+				var destination = one.Destination;
 			}
 
 			Assert.IsNotNull(messages);
@@ -67,6 +68,7 @@ namespace Test
                 var prefix = one.Prefix;
                 var receivedAt = one.ReceivedAt;
                 var text = one.Text;
+                var destination = one.Destination;
             }
 
             Assert.IsNotNull(messages);
@@ -85,7 +87,7 @@ namespace Test
 
 		private string getData()
 		{
-            return "{\"75396\":{\"date\":\"2015-04-01 14:01:24\",\"sender\":\"442073238000\",\"prefix\":\"\",\"text\":\"test\"},\"75397\":{\"date\":\"2015-04-01 22:31:22\",\"sender\":\"442073238001\",\"prefix\":\"\",\"text\":\"test 1\"},\"75398\":{\"date\":\"2015-04-01 22:37:13\",\"sender\":\"442073238002\",\"prefix\":\"\",\"text\":\"test 2\"},\"75399\":{\"date\":\"2015-04-01 22:39:33\",\"sender\":\"442073238003\",\"prefix\":\"\",\"text\":\"test 3\"}}";
+            return "{\"75396\":{\"date\":\"2015-04-01 14:01:24\",\"sender\":\"442073238000\",\"prefix\":\"\",\"text\":\"test\",\"phone\":\"5163251632\"},\"75397\":{\"date\":\"2015-04-01 22:31:22\",\"sender\":\"442073238001\",\"prefix\":\"\",\"text\":\"test 1\",\"phone\":\"5163251632\"},\"75398\":{\"date\":\"2015-04-01 22:37:13\",\"sender\":\"442073238002\",\"prefix\":\"\",\"text\":\"test 2\",\"phone\":\"5163251632\"},\"75399\":{\"date\":\"2015-04-01 22:39:33\",\"sender\":\"442073238003\",\"prefix\":\"\",\"text\":\"test 3\",\"phone\":\"5163251632\"}}";
 		}
 
 		private string getErrorData()

@@ -62,5 +62,12 @@ namespace Intis.SDK.Entity
         /// <returns>string</returns>
         [DataMember(Name = "text")]
         public string Text { get; set; }
+
+        /// <summary>
+        /// Message destination
+        /// </summary>
+        /// <returns>string</returns>
+        [DataMember(Name = "phone")]
+        public string Destination { get; set; }
     }
 }

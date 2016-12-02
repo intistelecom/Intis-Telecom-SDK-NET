@@ -289,10 +289,11 @@ var messages = client.GetIncomingMessages(data);
 
 foreach (var one in messages)
 {
-    item.MessageId;  // Getting message ID
-    item.Originator; // Getting sender name of the incoming message
-    item.Prefix;     // Getting prefix of the incoming message
-    item.ReceivedAt; // Getting date of the incoming message
-    item.Text;       // Getting text of the incoming message
+    item.MessageId;   // Getting message ID
+    item.Originator;  // Getting sender name of the incoming message
+    item.Prefix;      // Getting prefix of the incoming message
+    item.ReceivedAt;  // Getting date of the incoming message
+    item.Text;        // Getting text of the incoming message
+	item.Destination; // Get message destination
 }
 ```
